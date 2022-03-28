@@ -133,6 +133,7 @@ class Job(object):
         time.sleep(0.5)
         try:
             result = RpcClient.call(Method.JobList, timeout=RPC_FRAMEWORK_API_REQ)
+            # Xcache.XCACHE_MSF_JOB_CACHE
             Xcache.set_msf_job_cache(result)
             if result is None:
                 return False

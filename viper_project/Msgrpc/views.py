@@ -70,14 +70,29 @@ class JobView(BaseView):
 
 class HandlerView(BaseView):
     def list(self, request, **kwargs):
+        """
+        获取监听数据
+        :param request:
+        :param kwargs:
+        :return:
+        """
         data = Handler.list()
         return Response(data)
 
     def create(self, request, **kwargs):
+        """
+        新增监听
+        :param request:
+        :param kwargs:
+        :return:
+        """
         try:
+            # 从前端获取新增监听参数
             opts = request.data.get('opts')
+            # {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'ExitOnSession': False, 'LHOST': '172.16.12.135', 'LPORT': 1234}
             if isinstance(opts, str):
                 opts = json.loads(opts)
+            # 新增监听
             context = Handler.create(opts)
         except Exception as E:
             logger.error(E)

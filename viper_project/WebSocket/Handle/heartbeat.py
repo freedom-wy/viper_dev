@@ -29,6 +29,11 @@ class HeartBeat(object):
 
     @staticmethod
     def first_heartbeat_result():
+        """
+        pass
+        :return:
+        """
+        # 获取所有控制的主机和session
         hosts_sorted, network_data = HeartBeat.list_hostandsession()
 
         result_history = PostModuleResultHistory.list_all()
@@ -174,6 +179,7 @@ class HeartBeat(object):
                 if host.get('ipaddress') == VIPER_IP:
                     host["session"].append(session)
 
+        # 获取所有的主机信息
         hosts = Host.list_hosts()
         sessions = HeartBeat.list_sessions()
 
@@ -412,7 +418,9 @@ class HeartBeat(object):
     def list_sessions():
         # 更新session的监听配置
         uuid_msfjobid = {}
+        # 从缓存中获取msfrpc的Jobs
         msfjobs = Job.list_msfrpc_jobs()
+
         if msfjobs is not None:
             for jobid in msfjobs:
                 datastore = msfjobs[jobid].get("datastore")
@@ -422,9 +430,12 @@ class HeartBeat(object):
                                                              "LPORT": datastore.get("LPORT"),
                                                              "LHOST": datastore.get("LHOST"),
                                                              "RHOST": datastore.get("RHOST")}
+                    logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
 
+        # 获取到的肉鸡的session?
         sessions = []
         session_info_dict = RpcClient.call(Method.SessionList, timeout=RPC_FRAMEWORK_API_REQ)
+        # logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
         if session_info_dict is None:
             return []
 

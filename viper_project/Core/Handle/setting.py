@@ -34,6 +34,7 @@ class Settings(object):
         if kind == "lhost":
             # 获取pem秘钥文件,用于https监听配置
             files = FileMsf.list_msf_files()
+            # logger.info("从msf目录中获取到的文件数据为: {}".format(files))
             pem_files = []
             for file in files:
                 name = file.get("name")
@@ -43,6 +44,7 @@ class Settings(object):
             lhostconf = Xcache.get_lhost_config()
             session_dict = Xcache.get_session_list()
             conf = {'lhost': lhostconf.get("lhost"), "pem_files": pem_files, "sessions": session_dict}
+            logger.info("获取到的配置数据为: {}".format(conf))
         elif kind == "telegram":
             conf = Xcache.get_telegram_conf()
         elif kind == "dingding":

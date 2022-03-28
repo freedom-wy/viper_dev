@@ -22,6 +22,10 @@ class Handler(object):
 
     @staticmethod
     def list():
+        """
+        监听载荷列出数据
+        :return:
+        """
         handlers = Handler.list_handler()
         context = data_return(200, handlers, CODE_MSG_ZH.get(200), CODE_MSG_EN.get(200))
         return context
@@ -29,7 +33,9 @@ class Handler(object):
     @staticmethod
     def list_handler():
         handlers = []
+        # 从缓存中获取数据Xcache.XCACHE_MSF_JOB_CACHE,通过msf创建监听后,向Xcache.XCACHE_MSF_JOB_CACHE写入数据
         infos = Job.list_msfrpc_jobs()
+        # logger.info("从缓存中获取到的XCACHE_MSF_JOB_CACHE为: {}".format(infos))
         if infos is None:
             return handlers
         for key in infos.keys():
@@ -51,7 +57,7 @@ class Handler(object):
                     z.update(one_handler)
                     one_handler = z
                     handlers.append(one_handler)
-        # 缓存当前监听配置
+        # 缓存当前监听配置Xcache.XCACHE_HADLER_CACHE
         Xcache.set_cache_handlers(handlers)
         # 获取虚拟监听
         virtual_handlers = Xcache.get_virtual_handlers()
@@ -130,6 +136,7 @@ class Handler(object):
     @staticmethod
     def create(opts=None):
         # 所有的参数必须大写
+        # {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'ExitOnSession': False, 'LHOST': '172.16.12.135', 'LPORT': 1234}
         # opts = {'PAYLOAD': payload, 'LHOST': LHOST, 'LPORT': LPORT, 'RHOST': RHOST}
         if opts.get('VIRTUALHANDLER') is True:  # 虚拟监听
             opts.pop('VIRTUALHANDLER')
@@ -213,6 +220,9 @@ class Handler(object):
                 context = data_return(500, {}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))
                 return context
 
+            # 发送给msf创建监听
+            # {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'ExitOnSession': False, 'LHOST': '172.16.12.135', 'LPORT': 1234, 'ReverseListenerBindAddress': '0.0.0.0', 'PayloadUUIDSeed': '6a0f00a6-ae78-11ec-a1e6-000c29c3ea5e'}
+            # logger.info("发送给Msf创建监听的参数为: {}".format(opts))
             result = MSFModule.run_msf_module_realtime(module_type="exploit", mname="multi/handler", opts=opts,
                                                        runasjob=True,
                                                        timeout=RPC_JOB_API_REQ)

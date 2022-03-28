@@ -56,6 +56,10 @@ class Host(object):
 
     @staticmethod
     def list_hosts():
+        """
+        将主机信息序列化
+        :return:
+        """
         models = HostModel.objects.all()
         result = HostSerializer(models, many=True).data
         return result

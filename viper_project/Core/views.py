@@ -193,6 +193,7 @@ class CurrentUserView(BaseView):
 
 class SettingView(BaseView):
     def list(self, request, **kwargs):
+        # 打开新增监听后 /api/v1/core/setting/?kind=lhost
         kind = request.query_params.get('kind')
         context = Settings.list(kind=kind)
         if isinstance(context, dict):
