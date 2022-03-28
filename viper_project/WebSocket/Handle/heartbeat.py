@@ -430,7 +430,7 @@ class HeartBeat(object):
                                                              "LPORT": datastore.get("LPORT"),
                                                              "LHOST": datastore.get("LHOST"),
                                                              "RHOST": datastore.get("RHOST")}
-                    logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
+                    # logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
 
         # 获取到的肉鸡的session?
         sessions = []

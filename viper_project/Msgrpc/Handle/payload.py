@@ -7,7 +7,7 @@ import os
 import time
 import zipfile
 from urllib import parse
-
+from Lib.log import logger
 from django.conf import settings
 from django.http import HttpResponse
 from jinja2 import Environment, FileSystemLoader
@@ -99,7 +99,10 @@ class Payload(object):
             else:
                 context = data_return(306, {}, Payload_MSG_ZH.get(306), Payload_MSG_EN.get(306))
                 return context
-
+        # 调用msf生成payload
+        logger.info("调用msf生成payload-->opts: {}".format(opts))
+        logger.info("调用msf生成payload-->mname: {}".format(mname))
+        # {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'WORKSPACE': None, 'VERBOSE': False, 'WfsDelay': 2, 'EnableContextEncoding': False, 'ContextInformationFile': None, 'DisablePayloadHandler': False, 'ExitOnSession': False, 'ListenerTimeout': 0, 'LHOST': '172.16.12.135', 'LPORT': 1234, 'ReverseListenerBindAddress': '0.0.0.0', 'PayloadUUIDSeed': '118cb5a5-ae7b-11ec-86c4-000c29c3ea5e', 'ReverseListenerBindPort': None, 'ReverseAllowProxy': False, 'ReverseListenerComm': None, 'ReverseListenerThreaded': False, 'StagerRetryCount': 10, 'StagerRetryWait': 5, 'PingbackRetries': 0, 'PingbackSleep': 30, 'PayloadUUIDRaw': None, 'PayloadUUIDName': None, 'PayloadUUIDTracking': False, 'EnableStageEncoding': False, 'StageEncoder': None, 'StageEncoderSaveRegisters': '', 'StageEncodingFallback': True, 'PrependMigrate': False, 'PrependMigrateProc': None, 'EXITFUNC': 'process', 'AutoLoadStdapi': True, 'AutoVerifySessionTimeout': 30, 'InitialAutoRunScript': '', 'AutoRunScript': '', 'AutoSystemInfo': True, 'EnableUnicodeEncoding': False, 'HandlerSSLCert': None, 'SessionRetryTotal': 31536000, 'SessionRetryWait': 10, 'SessionExpirationTimeout': 94608000, 'SessionCommunicationTimeout': 31536000, 'PayloadProcessCommandLine': '', 'AutoUnhookProcess': False, 'TARGET': 0, 'ID': 4, 'Format': 'exe'}
         if opts.get("Format") in ["exe-diy", "dll-diy", "dll-mutex-diy", "elf-diy"]:
             # 生成原始payload
             tmp_type = opts.get("Format")
@@ -240,6 +243,7 @@ class Payload(object):
                 "loop-vbs": "vbs",
                 "war": "war",
             }
+            # 调用msf创建exe的payload
             result = MSFModule.run_msf_module_realtime(module_type="payload", mname=mname, opts=opts,
                                                        timeout=RPC_FRAMEWORK_API_REQ)
             if result is None:
@@ -261,6 +265,7 @@ class Payload(object):
         # 中文特殊处理
         urlpart = parse.quote(os.path.splitext(filename)[0], 'utf-8')
         leftpart = os.path.splitext(filename)[-1]
+        # 文件名
         response['Content-Disposition'] = f"{urlpart}{leftpart}"
         return response
 
@@ -594,6 +599,7 @@ echo ^</Project^>>>a.xml"""
 
     @staticmethod
     def _destroy_old_files():
+        # 'STATICFILES'/'TMP'
         for file in os.listdir(File.tmp_dir()):
             file_path = os.path.join(File.tmp_dir(), file)
             if os.path.isdir(file_path):

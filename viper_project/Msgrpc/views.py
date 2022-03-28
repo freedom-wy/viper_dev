@@ -33,11 +33,13 @@ from Msgrpc.Handle.webdelivery import WebDelivery
 class PayloadView(BaseView):
     def create(self, request, **kwargs):
         try:
+            # 从前端获取参数数据
             mname = request.data.get('mname')
             opts = request.data.get('opts')
             if isinstance(opts, str):
                 opts = json.loads(opts)
 
+            # 生成payload文件
             response = Payload.create(mname, opts)
 
             if isinstance(response, dict):

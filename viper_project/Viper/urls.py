@@ -13,7 +13,9 @@ from PostModule.views import PostModuleConfigView, PostModuleActuatorView, PostM
 from PostModule.views import PostModuleResultHistoryView, PostModuleAutoView
 
 router = routers.DefaultRouter()
+# 登录认证
 router.register(r'api/v1/core/baseauth', BaseAuthView, basename="BaseAuth")
+# 获取当前登录用户信息
 router.register(r'api/v1/core/currentuser', CurrentUserView, basename="CurrentUser")
 router.register(r'api/v1/core/notices', NoticesView, basename="Notice")
 router.register(r'api/v1/core/setting', SettingView, basename="Setting")
@@ -23,6 +25,7 @@ router.register(r'api/v1/core/uuidjson', UUIDJsonView, basename="UUIDJsonView")
 
 router.register(r'api/v1/core/networksearch', NetworkSearchView, basename="NetworkSearch")
 router.register(r'api/v1/msgrpc/servicestatus', ServiceStatusView, basename="ServiceStatus")
+# 生成载荷
 router.register(r'api/v1/msgrpc/payload', PayloadView, basename="Payload")
 router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
 # 监听载荷
