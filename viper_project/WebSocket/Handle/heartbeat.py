@@ -30,7 +30,7 @@ class HeartBeat(object):
     @staticmethod
     def first_heartbeat_result():
         """
-        pass
+        在第一次发送的心跳中运行
         :return:
         """
         # 获取所有控制的主机和session
@@ -54,26 +54,30 @@ class HeartBeat(object):
 
         result = {
             'hosts_sorted_update': True,
-            'hosts_sorted': hosts_sorted,
+            'hosts_sorted': hosts_sorted,  # 主机数据
             'network_data_update': True,
-            'network_data': network_data,
+            'network_data': network_data,  # 节点数据和拓扑关系
             'result_history_update': True,
             'result_history': result_history,
             'notices_update': True,
-            'notices': notices,
+            'notices': notices,  # 所有历史通知信息
             'task_queue_length': task_queue_length,
             'jobs_update': True,
             'jobs': jobs,
             'bot_wait_list_update': True,
             'bot_wait_list': bot_wait_list,
             'module_options_update': True,
-            'module_options': module_options,
+            'module_options': module_options,  # 所有模块数据
         }
-        # logger.info("心跳数据为: {}".format(json.dumps(result)))
+        logger.info("心跳数据为: {}".format(json.dumps(result)))
         return result
 
     @staticmethod
     def get_heartbeat_result():
+        """
+        在监控线程中运行
+        :return:
+        """
         result = {}
 
         # jobs 列表 首先执行,刷新数据,删除过期任务
