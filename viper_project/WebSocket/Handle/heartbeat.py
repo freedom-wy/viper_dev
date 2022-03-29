@@ -179,9 +179,12 @@ class HeartBeat(object):
                 if host.get('ipaddress') == VIPER_IP:
                     host["session"].append(session)
 
-        # 获取所有的主机信息
+        # 从数据库中获取主机信息
         hosts = Host.list_hosts()
+        logger.info("主机信息为: {}".format(hosts))
+        # 获取session信息
         sessions = HeartBeat.list_sessions()
+        logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:
@@ -418,7 +421,7 @@ class HeartBeat(object):
     def list_sessions():
         # 更新session的监听配置
         uuid_msfjobid = {}
-        # 从缓存中获取msfrpc的Jobs
+        # 从缓存XCACHE_MSF_JOB_CACHE中获取msfrpc的Jobs
         msfjobs = Job.list_msfrpc_jobs()
 
         if msfjobs is not None:
@@ -430,9 +433,9 @@ class HeartBeat(object):
                                                              "LPORT": datastore.get("LPORT"),
                                                              "LHOST": datastore.get("LHOST"),
                                                              "RHOST": datastore.get("RHOST")}
-                    # logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
+        logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
 
-        # 获取到的肉鸡的session?
+        # 从msf获取被控主机的session
         sessions = []
         session_info_dict = RpcClient.call(Method.SessionList, timeout=RPC_FRAMEWORK_API_REQ)
         # logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
@@ -443,6 +446,7 @@ class HeartBeat(object):
             logger.warning(session_info_dict.get('error_string'))
             return []
 
+        # session_info_dict {'5': {'type': 'meterpreter', 'tunnel_local': '172.16.12.135:1234', 'tunnel_peer': '172.16.12.131:49158', 'comm_channel_session': None, 'via_exploit': 'exploit/multi/handler', 'via_payload': 'payload/windows/x64/meterpreter/reverse_tcp', 'desc': 'Meterpreter', 'info': '', 'workspace': 'false', 'session_host': '172.16.12.131', 'session_port': 49158, 'target_host': '', 'username': 'unknown', 'uuid': '9xexzlqu', 'exploit_uuid': 'fe0e1230-90a8-013a-88e1-000c29627aa3', 'routes': [], 'arch': 'x64', 'name': 5, 'platform': 'windows', 'advanced_info': None, 'load_powershell': False, 'load_python': False, 'last_checkin': 1648521849}}
         sessionhosts = []
         for session_id_str in session_info_dict.keys():
             session_info = session_info_dict.get(session_id_str)
@@ -481,6 +485,7 @@ class HeartBeat(object):
                 tunnel_peer_ip = tunnel_peer.split(":")[0]
                 one_session['tunnel_peer_ip'] = tunnel_peer_ip
 
+                # 获取IP地理位置信息
                 one_session['tunnel_peer_locate_zh'] = IPGeo.get_ip_geo_str(tunnel_peer_ip, "zh-CN")
                 one_session['tunnel_peer_locate_en'] = IPGeo.get_ip_geo_str(tunnel_peer_ip, "en-US")
 
@@ -571,6 +576,7 @@ class HeartBeat(object):
             return count
 
         sessions = sorted(sessions, key=session_host_key)
+        # logger.info("session信息为: {}".format(json.dumps(sessions)))
 
         # 获取新增的session配置信息
         add_session_dict = Xcache.update_session_list(sessions)

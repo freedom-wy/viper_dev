@@ -31,6 +31,7 @@ router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
 # 监听载荷
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")
 router.register(r'api/v1/msgrpc/webdelivery', WebDeliveryView, basename="WebDelivery")
+# 获取session详细信息
 router.register(r'api/v1/msgrpc/session', SessionView, basename="Session")
 router.register(r'api/v1/msgrpc/sessionio', SessionIOView, basename="SessionIO")
 router.register(r'api/v1/msgrpc/route', RouteView, basename="Route")
