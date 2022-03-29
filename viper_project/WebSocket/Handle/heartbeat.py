@@ -48,7 +48,10 @@ class HeartBeat(object):
 
         # 任务队列长度
         task_queue_length = Xcache.get_module_task_length()
+
+        # 所有模块
         module_options = PostModuleConfig.list_dynamic_option()
+
         result = {
             'hosts_sorted_update': True,
             'hosts_sorted': hosts_sorted,
@@ -66,7 +69,7 @@ class HeartBeat(object):
             'module_options_update': True,
             'module_options': module_options,
         }
-
+        # logger.info("心跳数据为: {}".format(json.dumps(result)))
         return result
 
     @staticmethod
@@ -181,10 +184,10 @@ class HeartBeat(object):
 
         # 从数据库中获取主机信息
         hosts = Host.list_hosts()
-        logger.info("主机信息为: {}".format(hosts))
+        # logger.info("主机信息为: {}".format(hosts))
         # 获取session信息
         sessions = HeartBeat.list_sessions()
-        logger.info("session信息为: {}".format(sessions))
+        # logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:
@@ -247,6 +250,7 @@ class HeartBeat(object):
 
         # 根据时间排序
         hosts = sorted(hosts, key=functools.cmp_to_key(sort_host))
+        # logger.info("排序后的Hosts信息为: {}".format(hosts))
 
         i = 0
         for one in hosts:
@@ -268,6 +272,7 @@ class HeartBeat(object):
 
         # 添加scan类型的edge
         online_edge_list = Edge.list_edge(type="scan")
+        # logger.info("online_edge_list的数据为: {}".format(online_edge_list))
         for online_edge in online_edge_list:
             edge_data = {
                 "source": online_edge.get("source"),
@@ -415,6 +420,7 @@ class HeartBeat(object):
                         edges.append(edge_data)
                         break  # 不存在session的主机只取一个payload即可
         network_data = {"nodes": nodes, "edges": edges}
+        # logger.info("network_data的数据为: {}".format(network_data))
         return hosts, network_data
 
     @staticmethod
@@ -433,7 +439,7 @@ class HeartBeat(object):
                                                              "LPORT": datastore.get("LPORT"),
                                                              "LHOST": datastore.get("LHOST"),
                                                              "RHOST": datastore.get("RHOST")}
-        logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
+        # logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
 
         # 从msf获取被控主机的session
         sessions = []

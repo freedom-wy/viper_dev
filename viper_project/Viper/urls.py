@@ -65,4 +65,5 @@ urlpatterns = [
     url(r'^', include(router.urls)),
 ]
 
+# 监控
 MainMonitor().start()

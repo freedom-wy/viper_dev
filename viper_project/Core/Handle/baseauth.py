@@ -15,10 +15,10 @@ from Lib.log import logger
 # 自定义认证方法
 class BaseAuth(TokenAuthentication):
     def authenticate_credentials(self, key=None):
-        logger.info("传递过来的token为: {}".format(key))
+        # logger.info("传递过来的token为: {}".format(key))
         # 搜索缓存的user token
         cache_user = Xcache.alive_token(key)
-        logger.info("用户信息为: {}".format(cache_user))
+        # logger.info("用户信息为: {}".format(cache_user))
         if cache_user:
             return cache_user, key
 
@@ -40,6 +40,6 @@ class BaseAuth(TokenAuthentication):
 
         # 缓存token
         if token:
-            logger.info("向缓存保存用户token信息")
+            logger.info("向redis保存用户token信息")
             Xcache.set_token_user(key, token.user)
         return token.user, token

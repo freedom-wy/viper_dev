@@ -81,6 +81,7 @@ class Host(object):
             HostModel.objects.filter(ipaddress=ipaddress).delete()
             model = HostModel.objects.create(ipaddress=ipaddress)
         result = HostSerializer(model, many=False).data
+        logger.info("新建主机: {}".format(result))
         return result
 
     @staticmethod
