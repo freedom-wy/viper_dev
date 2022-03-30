@@ -174,6 +174,12 @@ class SessionIOView(BaseView):
 
 class SessionView(BaseView):
     def list(self, request, **kwargs):
+        """
+        获取session相关信息,权限信息等
+        :param request:
+        :param kwargs:
+        :return:
+        """
         try:
             sessionid = int(request.query_params.get('sessionid'))
             context = Session.list(sessionid=sessionid)
@@ -183,6 +189,12 @@ class SessionView(BaseView):
         return Response(context)
 
     def update(self, request, **kwargs):
+        """
+        更新session相关信息,权限信息等
+        :param request:
+        :param kwargs:
+        :return:
+        """
         try:
             sessionid = int(request.data.get('sessionid'))
             context = Session.update(sessionid=sessionid)
@@ -194,6 +206,13 @@ class SessionView(BaseView):
             return Response(context)
 
     def destroy(self, request, pk=None, **kwargs):
+        """
+        删除session信息
+        :param request:
+        :param pk:
+        :param kwargs:
+        :return:
+        """
         try:
             sessionid = int(request.query_params.get('sessionid'))
             context = Session.destroy(sessionid)
@@ -435,7 +454,13 @@ class FileMsfView(BaseView):
 
 class FileSessionView(BaseView):
     def list(self, request, **kwargs):
-        """查询数据库中的信息"""
+        """
+        查询数据库中的信息
+        /api/v1/msgrpc/filesession/?sessionid=11&operation=pwd
+        :param request:
+        :param kwargs:
+        :return:
+        """
         try:
             operation = request.query_params.get('operation')
             sessionid = int(request.query_params.get('sessionid'))

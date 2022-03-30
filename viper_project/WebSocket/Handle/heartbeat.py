@@ -194,10 +194,10 @@ class HeartBeat(object):
 
         # 从数据库中获取主机信息
         hosts = Host.list_hosts()
-        logger.info("主机信息为: {}".format(hosts))
+        # logger.info("主机信息为: {}".format(hosts))
         # 获取session信息
         sessions = HeartBeat.list_sessions()
-        logger.info("session信息为: {}".format(sessions))
+        # logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:
@@ -456,7 +456,7 @@ class HeartBeat(object):
         # 从msf获取被控主机的session
         sessions = []
         session_info_dict = RpcClient.call(Method.SessionList, timeout=RPC_FRAMEWORK_API_REQ)
-        logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
+        # logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
         if session_info_dict is None:
             return []
 

@@ -31,7 +31,7 @@ router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
 # 监听载荷
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")
 router.register(r'api/v1/msgrpc/webdelivery', WebDeliveryView, basename="WebDelivery")
-# 获取session详细信息
+# session相关
 router.register(r'api/v1/msgrpc/session', SessionView, basename="Session")
 router.register(r'api/v1/msgrpc/sessionio', SessionIOView, basename="SessionIO")
 router.register(r'api/v1/msgrpc/route', RouteView, basename="Route")
@@ -39,6 +39,7 @@ router.register(r'api/v1/msgrpc/socks', SocksView, basename="Socks")
 router.register(r'api/v1/msgrpc/portfwd', PortFwdView, basename="PortFwd")
 router.register(r'api/v1/msgrpc/transport', TransportView, basename="Transport")
 router.register(r'api/v1/msgrpc/filemsf', FileMsfView, basename="FileMsfView")
+# 查看被控主机文件管理
 router.register(r'api/v1/msgrpc/filesession', FileSessionView, basename="FileSessionView")
 router.register(r'api/v1/msgrpc/lazyloader', LazyLoaderView, basename="LazyLoaderView")
 router.register(r'api/v1/msgrpc/collectsandbox', CollectSandBoxView, basename="CollectSandBoxView")
