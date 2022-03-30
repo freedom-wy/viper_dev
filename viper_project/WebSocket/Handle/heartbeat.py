@@ -69,7 +69,7 @@ class HeartBeat(object):
             'module_options_update': True,
             'module_options': module_options,  # 所有模块数据
         }
-        logger.info("心跳数据为: {}".format(json.dumps(result)))
+        # logger.info("心跳数据为: {}".format(json.dumps(result)))
         return result
 
     @staticmethod
@@ -81,7 +81,9 @@ class HeartBeat(object):
         result = {}
 
         # jobs 列表 首先执行,刷新数据,删除过期任务
+        # 获取msf中Job信息
         jobs = Job.list_jobs()
+        # 从缓存中获取Job信息
         cache_jobs = Xcache.get_heartbeat_cache_jobs()
         if cache_jobs == jobs:
             result["jobs_update"] = False
@@ -91,7 +93,7 @@ class HeartBeat(object):
             result["jobs_update"] = True
             result["jobs"] = jobs
 
-        # hosts_sorted,network_data
+        # 获取主机数据和网络数据
         hosts_sorted, network_data = HeartBeat.list_hostandsession()
 
         cache_hosts_sorted = Xcache.get_heartbeat_cache_hosts_sorted()
@@ -161,6 +163,10 @@ class HeartBeat(object):
             Xcache.set_heartbeat_cache_module_options(module_options)
             result["module_options_update"] = True
             result["module_options"] = module_options
+        return_log = result
+        del return_log["module_options"]
+        del return_log["notices"]
+        logger.info("发送给前端的websocket信息为: {}".format(json.dumps(return_log)))
         return result
 
     @staticmethod
@@ -188,10 +194,10 @@ class HeartBeat(object):
 
         # 从数据库中获取主机信息
         hosts = Host.list_hosts()
-        # logger.info("主机信息为: {}".format(hosts))
+        logger.info("主机信息为: {}".format(hosts))
         # 获取session信息
         sessions = HeartBeat.list_sessions()
-        # logger.info("session信息为: {}".format(sessions))
+        logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:
@@ -215,9 +221,11 @@ class HeartBeat(object):
                     host['session'].append(session)
                     break
             else:
+                # logger.info("未找到的主机为: {}".format(session_host))
                 # 未找到对应的host
                 # 减少新建无效的host
                 if session.get("available"):
+                    # 新建主机
                     host_create = Host.create_host(session_host)
                     host_create['session'] = [session]
                     hosts.append(host_create)
@@ -431,7 +439,7 @@ class HeartBeat(object):
     def list_sessions():
         # 更新session的监听配置
         uuid_msfjobid = {}
-        # 从缓存XCACHE_MSF_JOB_CACHE中获取msfrpc的Jobs
+        # 从缓存XCACHE_MSF_JOB_CACHE中获取msfrpc的Jobs,监听数据
         msfjobs = Job.list_msfrpc_jobs()
 
         if msfjobs is not None:
@@ -448,7 +456,7 @@ class HeartBeat(object):
         # 从msf获取被控主机的session
         sessions = []
         session_info_dict = RpcClient.call(Method.SessionList, timeout=RPC_FRAMEWORK_API_REQ)
-        # logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
+        logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
         if session_info_dict is None:
             return []
 
@@ -586,7 +594,6 @@ class HeartBeat(object):
             return count
 
         sessions = sorted(sessions, key=session_host_key)
-        # logger.info("session信息为: {}".format(json.dumps(sessions)))
 
         # 获取新增的session配置信息
         add_session_dict = Xcache.update_session_list(sessions)
@@ -625,4 +632,5 @@ class HeartBeat(object):
                 Notice.send_info(f"发送自动编排任务: SID {add_session_dict.get(session_uuid).get('id')}",
                                  f"Send automation tasks: SID {add_session_dict.get(session_uuid).get('id')}")
 
+        # logger.info("更新后的session信息为: {}".format(json.dumps(sessions)))
         return sessions
