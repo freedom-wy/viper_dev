@@ -44,6 +44,7 @@ router.register(r'api/v1/postlateral/portservice', PortServiceView, basename="Po
 router.register(r'api/v1/postlateral/credential', CredentialView, basename="CredentialView")
 router.register(r'api/v1/postlateral/vulnerability', VulnerabilityView, basename="VulnerabilityView")
 router.register(r'api/v1/postmodule/postmoduleconfig', PostModuleConfigView, basename="PostModuleConfig")
+# 操作模块
 router.register(r'api/v1/postmodule/postmoduleactuator', PostModuleActuatorView, basename="PostModuleActuator")
 router.register(r'api/v1/postmodule/postmoduleresult', PostModuleResultView, basename="PostModuleResult")
 router.register(r'api/v1/postmodule/postmoduleresulthistory', PostModuleResultHistoryView,

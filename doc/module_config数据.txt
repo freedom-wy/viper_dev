@@ -1,0 +1,102 @@
+module_config的数据为
+
+
+{
+    "BROKER":"post_msf_job",
+    "NAME_ZH":"进程操作",
+    "DESC_ZH":"根据PID操作进程,包括注入/关闭,窃取token,还原token.",
+    "NAME_EN":"Process operation",
+    "DESC_EN":"According to the PID operation process, including injecting/closing, stealing tokens, and restoring tokens.",
+    "WARN_ZH":null,
+    "WARN_EN":null,
+    "AUTHOR":[
+        "Viper"
+    ],
+    "REFERENCES":[
+        "https://attack.mitre.org/techniques/T1050/"
+    ],
+    "README":[
+        "https://www.yuque.com/vipersec/module/msfxfl"
+    ],
+    "MODULETYPE":"Defense_Evasion",
+    "OPTIONS":[
+        {
+            "name":"_msgrpc_handler",
+            "tag_zh":"监听",
+            "desc_zh":"模块需要的监听器",
+            "tag_en":"Handler",
+            "desc_en":"Handler config that use by module",
+            "type":"enum",
+            "required":false,
+            "default":null,
+            "extra_data":null,
+            "length":24,
+            "enum_list":[
+
+            ]
+        },
+        {
+            "name":"PID",
+            "tag_zh":"PID",
+            "desc_zh":"进程PID",
+            "tag_en":"PID",
+            "desc_en":"Process PID",
+            "type":"integer",
+            "required":true,
+            "default":null,
+            "extra_data":null,
+            "length":6,
+            "enum_list":[
+
+            ]
+        },
+        {
+            "name":"ACTION",
+            "tag_zh":"操作",
+            "desc_zh":"选择针对进程的操作",
+            "tag_en":"Action",
+            "desc_en":"Select the action for the process",
+            "type":"enum",
+            "required":true,
+            "default":"inject",
+            "extra_data":null,
+            "length":18,
+            "enum_list":[
+                {
+                    "tag_zh":"窃取token(steal_token)",
+                    "tag_en":"steal_token",
+                    "value":"steal_token"
+                },
+                {
+                    "tag_zh":"还原token(rev2self)",
+                    "tag_en":"rev2self",
+                    "value":"rev2self"
+                },
+                {
+                    "tag_zh":"注入(inject)",
+                    "tag_en":"inject",
+                    "value":"inject"
+                },
+                {
+                    "tag_zh":"关闭(kill)",
+                    "tag_en":"kill",
+                    "value":"kill"
+                }
+            ]
+        }
+    ],
+    "loadpath":"MODULES.DefenseEvasion_ProcessInjection_ProcessHandle",
+    "REQUIRE_SESSION":true,
+    "PLATFORM":[
+        "Windows"
+    ],
+    "PERMISSIONS":[
+        "User",
+        "Administrator",
+        "SYSTEM"
+    ],
+    "ATTCK":[
+        "T1055"
+    ],
+    "SEARCH":""
+}

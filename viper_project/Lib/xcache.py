@@ -347,6 +347,7 @@ class Xcache(object):
         """任务队列"""
         for i in range(5):
             key = f"{Xcache.XCACHE_MODULES_TASK_LIST}_{req.get('uuid')}"
+            logger.info("放入{}队列的数据为{}".format(key, req))
             cache.set(key, req, None)
             if cache.get(key) is not None:
                 break

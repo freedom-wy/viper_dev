@@ -41,8 +41,10 @@ class MSFModule(object):
                   True,  # 强制设置后台运行
                   RPC_JOB_API_REQ  # 超时时间
                   ]
+        logger.info("发送给msf的参数为: {}".format(json.dumps(params)))
 
         result = RpcClient.call(Method.ModuleExecute, params, timeout=RPC_JOB_API_REQ)
+        logger.info("msf返回数据为: {}".format(result))
         if result is None:
             Notice.send_warning(f"渗透服务连接失败,无法执行模块 :{msf_module.NAME_ZH}",
                                 f"MSFRPC connection failed and the module could not be executed :<{msf_module.NAME_EN}>")
@@ -88,6 +90,7 @@ class MSFModule(object):
         # 解析报文
         try:
             msf_module_return_dict = json.loads(body)
+            logger.info("msf订阅消息: {}".format(msf_module_return_dict))
         except Exception as E:
             logger.error(E)
             return False
@@ -95,6 +98,7 @@ class MSFModule(object):
         # 获取对应模块实例
         try:
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
+            logger.info("从队列获取到的消息: {}".format(req))
         except Exception as E:
             logger.error(E)
             return False
@@ -141,7 +145,10 @@ class MSFModule(object):
         """处理msf模块发送的data信息pub_json_data"""
         body = message.get('data')
         try:
+            # 从msf获取到的订阅消息
             msf_module_return_dict = json.loads(body)
+            # logger.info("msf订阅消息: {}".format(msf_module_return_dict))
+            # 从队列获取到的消息
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
         except Exception as E:
             logger.error(E)
