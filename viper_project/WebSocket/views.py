@@ -182,7 +182,6 @@ class HeartBeatView(WebsocketConsumer):
         connect_request_args = QueryDict(query_string=query_string, encoding='utf-8')
 
         token = connect_request_args.get('token')
-        logger.info("websocket获取到的token: {}".format(token))
 
         if Xcache.alive_token(token):
             result = HeartBeat.first_heartbeat_result()

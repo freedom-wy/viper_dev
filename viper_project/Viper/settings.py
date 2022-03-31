@@ -152,7 +152,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
-        # drf认证方法
         'Core.Handle.baseauth.BaseAuth',
     )
 }

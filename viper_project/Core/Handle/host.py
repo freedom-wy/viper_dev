@@ -56,10 +56,6 @@ class Host(object):
 
     @staticmethod
     def list_hosts():
-        """
-        将主机信息序列化
-        :return:
-        """
         models = HostModel.objects.all()
         result = HostSerializer(models, many=True).data
         return result
@@ -81,7 +77,6 @@ class Host(object):
             HostModel.objects.filter(ipaddress=ipaddress).delete()
             model = HostModel.objects.create(ipaddress=ipaddress)
         result = HostSerializer(model, many=False).data
-        # logger.info("新建主机: {}".format(result))
         return result
 
     @staticmethod

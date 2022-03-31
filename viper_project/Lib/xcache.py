@@ -604,10 +604,16 @@ class Xcache(object):
 
         for handler in handler_list:
             tmphandler = copy.copy(handler)
-            tmpid = tmphandler.pop('ID')
+            try:
+                tmpid = tmphandler.pop('ID')
+            except Exception as _:
+                pass
 
             tmphandler1 = copy.copy(onehandler)
-            tmphandler1.pop('ID')
+            try:
+                tmphandler1.pop('ID')
+            except Exception as _:
+                pass
             if tmphandler == tmphandler1:
                 return tmpid
             if tmpid <= minid:
@@ -728,7 +734,6 @@ class Xcache(object):
     @staticmethod
     def alive_token(token):
         key = f"{Xcache.XCACHE_TOKEN}-{token}"
-        # 从redis中获取用户信息
         cache_user = cache.get(key)
         return cache_user
 

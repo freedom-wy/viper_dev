@@ -6,7 +6,6 @@ import logging
 import random
 import socket
 import time
-import json
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from asgiref.sync import async_to_sync
@@ -40,7 +39,6 @@ class MainMonitor(object):
     def start(self):
         try:
             time.sleep(random.random())
-            # 监控服务
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.bind(("127.0.0.1", 47200))
         except socket.error:
@@ -48,18 +46,15 @@ class MainMonitor(object):
             return
         # 初始化配置
         try:
-            # 将viper的255.255.255.255写入HostModel表
             Host.init_on_start()
         except Exception as E:
             logger.exception(E)
 
-        # 加载redis中历史监听
+        # 加载历史监听
         handler_list = Xcache.get_cache_handlers()
-        # logger.info("监听历史为: {}".format(json.dumps(handler_list)))
-        # 创建监听的备份
         Handler.recovery_cache_last_handler(handler_list)
 
-        # Xcache初始化部分,清空XCACHE_MODULES_CONFIG,XCACHE_MODULES_TASK_LIST,XCACHE_SESSION_INFO
+        # Xcache初始化部分
         Xcache.init_xcache_on_start()
 
         # 加载模块配置信息
@@ -95,11 +90,11 @@ class MainMonitor(object):
                                    trigger='interval',
                                    seconds=1, id='sub_msf_module_log_thread')
 
-        # 心跳线程,将1秒修改为5秒
+        # 心跳线程
         self.MainScheduler.add_job(func=self.sub_heartbeat_thread,
                                    max_instances=1,
                                    trigger='interval',
-                                   seconds=5, id='sub_heartbeat_thread')
+                                   seconds=1, id='sub_heartbeat_thread')
 
         # send_sms线程
         self.MainScheduler.add_job(func=self.sub_send_sms_thread,
@@ -216,10 +211,8 @@ class MainMonitor(object):
         if rcon is None:
             return
         ps = rcon.pubsub(ignore_subscribe_messages=True)
-        # 订阅者
         ps.subscribe(**{MSF_RPC_RESULT_CHANNEL: MSFModule.store_result_from_sub})
         for message in ps.listen():
-            logger.info("sub_msf_module_result_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 
@@ -232,7 +225,6 @@ class MainMonitor(object):
         ps = rcon.pubsub(ignore_subscribe_messages=True)
         ps.subscribe(**{MSF_RPC_DATA_CHANNEL: MSFModule.store_monitor_from_sub})
         for message in ps.listen():
-            logger.info("sub_msf_module_data_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 
@@ -245,7 +237,6 @@ class MainMonitor(object):
         ps = rcon.pubsub(ignore_subscribe_messages=True)
         ps.subscribe(**{MSF_RPC_CONSOLE_PRINT: Console.print_monitor_from_sub})
         for message in ps.listen():
-            logger.info("sub_msf_console_print_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 
@@ -258,7 +249,6 @@ class MainMonitor(object):
         ps = rcon.pubsub(ignore_subscribe_messages=True)
         ps.subscribe(**{MSF_RPC_LOG_CHANNEL: MSFModule.store_log_from_sub})
         for message in ps.listen():
-            logger.info("sub_msf_module_log_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 
@@ -271,7 +261,6 @@ class MainMonitor(object):
         ps = rcon.pubsub(ignore_subscribe_messages=True)
         ps.subscribe(**{VIPER_RPC_UUID_JSON_DATA: UUIDJson.store_data_from_sub})
         for message in ps.listen():
-            logger.info("sub_rpc_uuid_json_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 
@@ -284,7 +273,6 @@ class MainMonitor(object):
         ps = rcon.pubsub(ignore_subscribe_messages=True)
         ps.subscribe(**{VIPER_PROXY_HTTP_SCAN_DATA: ProxyHttpScan.store_request_response_from_sub})
         for message in ps.listen():
-            logger.info("sub_proxy_http_scan_thread订阅消息: {}".format(message))
             if message:
                 logger.warning(f"不应获取非空message {message}")
 

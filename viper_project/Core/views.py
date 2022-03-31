@@ -132,7 +132,6 @@ class NetworkSearchView(BaseView):
 
 class BaseAuthView(ModelViewSet, UpdateAPIView, DestroyAPIView):
     queryset = None  # 设置类的queryset
-    # 使用默认的token序列化器
     serializer_class = AuthTokenSerializer  # 设置类的serializer_class
     permission_classes = (AllowAny,)
 
@@ -148,13 +147,10 @@ class BaseAuthView(ModelViewSet, UpdateAPIView, DestroyAPIView):
             return Response(context)
 
         try:
-            # 对前端传递过来的数据进行反序列化
             serializer = AuthTokenSerializer(data=request.data)
             if serializer.is_valid():
-                # 对user生成token
                 token, created = Token.objects.get_or_create(user=serializer.validated_data['user'])
                 time_now = datetime.datetime.now()
-                # 检查token是否已过期
                 if created or token.created < time_now - datetime.timedelta(minutes=EXPIRE_MINUTES):
                     # 更新创建时间,保持token有效
                     token.delete()
@@ -185,7 +181,6 @@ class BaseAuthView(ModelViewSet, UpdateAPIView, DestroyAPIView):
 class CurrentUserView(BaseView):
     def list(self, request, **kwargs):
         """查询数据库中的host信息"""
-        # 获取用户信息
         user = request.user
         context = CurrentUser.list(user)
         return Response(context)
@@ -193,7 +188,6 @@ class CurrentUserView(BaseView):
 
 class SettingView(BaseView):
     def list(self, request, **kwargs):
-        # 打开新增监听后 /api/v1/core/setting/?kind=lhost
         kind = request.query_params.get('kind')
         context = Settings.list(kind=kind)
         if isinstance(context, dict):

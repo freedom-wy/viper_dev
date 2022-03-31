@@ -250,7 +250,6 @@ class Ip2Region(object):
             return None
 
 
-# IP数据文件
 dbFile = os.path.join(settings.BASE_DIR, 'STATICFILES', 'STATIC', 'ip2region.db')
 
 ip2region_instance = Ip2Region(dbFile)

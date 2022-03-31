@@ -29,11 +29,6 @@ class HeartBeat(object):
 
     @staticmethod
     def first_heartbeat_result():
-        """
-        在第一次发送的心跳中运行
-        :return:
-        """
-        # 获取所有控制的主机和session
         hosts_sorted, network_data = HeartBeat.list_hostandsession()
 
         result_history = PostModuleResultHistory.list_all()
@@ -48,42 +43,33 @@ class HeartBeat(object):
 
         # 任务队列长度
         task_queue_length = Xcache.get_module_task_length()
-
-        # 所有模块
         module_options = PostModuleConfig.list_dynamic_option()
-
         result = {
             'hosts_sorted_update': True,
-            'hosts_sorted': hosts_sorted,  # 主机数据
+            'hosts_sorted': hosts_sorted,
             'network_data_update': True,
-            'network_data': network_data,  # 节点数据和拓扑关系
+            'network_data': network_data,
             'result_history_update': True,
             'result_history': result_history,
             'notices_update': True,
-            'notices': notices,  # 所有历史通知信息
+            'notices': notices,
             'task_queue_length': task_queue_length,
             'jobs_update': True,
             'jobs': jobs,
             'bot_wait_list_update': True,
             'bot_wait_list': bot_wait_list,
             'module_options_update': True,
-            'module_options': module_options,  # 所有模块数据
+            'module_options': module_options,
         }
-        # logger.info("心跳数据为: {}".format(json.dumps(result)))
+
         return result
 
     @staticmethod
     def get_heartbeat_result():
-        """
-        在监控线程中运行
-        :return:
-        """
         result = {}
 
         # jobs 列表 首先执行,刷新数据,删除过期任务
-        # 获取msf中Job信息
         jobs = Job.list_jobs()
-        # 从缓存中获取Job信息
         cache_jobs = Xcache.get_heartbeat_cache_jobs()
         if cache_jobs == jobs:
             result["jobs_update"] = False
@@ -93,7 +79,7 @@ class HeartBeat(object):
             result["jobs_update"] = True
             result["jobs"] = jobs
 
-        # 获取主机数据和网络数据
+        # hosts_sorted,network_data
         hosts_sorted, network_data = HeartBeat.list_hostandsession()
 
         cache_hosts_sorted = Xcache.get_heartbeat_cache_hosts_sorted()
@@ -163,10 +149,6 @@ class HeartBeat(object):
             Xcache.set_heartbeat_cache_module_options(module_options)
             result["module_options_update"] = True
             result["module_options"] = module_options
-        return_log = result
-        del return_log["module_options"]
-        del return_log["notices"]
-        logger.info("发送给前端的websocket信息为: {}".format(json.dumps(return_log)))
         return result
 
     @staticmethod
@@ -192,12 +174,8 @@ class HeartBeat(object):
                 if host.get('ipaddress') == VIPER_IP:
                     host["session"].append(session)
 
-        # 从数据库中获取主机信息
         hosts = Host.list_hosts()
-        # logger.info("主机信息为: {}".format(hosts))
-        # 获取session信息
         sessions = HeartBeat.list_sessions()
-        # logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:
@@ -221,11 +199,9 @@ class HeartBeat(object):
                     host['session'].append(session)
                     break
             else:
-                # logger.info("未找到的主机为: {}".format(session_host))
                 # 未找到对应的host
                 # 减少新建无效的host
                 if session.get("available"):
-                    # 新建主机
                     host_create = Host.create_host(session_host)
                     host_create['session'] = [session]
                     hosts.append(host_create)
@@ -262,7 +238,6 @@ class HeartBeat(object):
 
         # 根据时间排序
         hosts = sorted(hosts, key=functools.cmp_to_key(sort_host))
-        # logger.info("排序后的Hosts信息为: {}".format(hosts))
 
         i = 0
         for one in hosts:
@@ -284,7 +259,6 @@ class HeartBeat(object):
 
         # 添加scan类型的edge
         online_edge_list = Edge.list_edge(type="scan")
-        # logger.info("online_edge_list的数据为: {}".format(online_edge_list))
         for online_edge in online_edge_list:
             edge_data = {
                 "source": online_edge.get("source"),
@@ -432,16 +406,13 @@ class HeartBeat(object):
                         edges.append(edge_data)
                         break  # 不存在session的主机只取一个payload即可
         network_data = {"nodes": nodes, "edges": edges}
-        # logger.info("network_data的数据为: {}".format(network_data))
         return hosts, network_data
 
     @staticmethod
     def list_sessions():
         # 更新session的监听配置
         uuid_msfjobid = {}
-        # 从缓存XCACHE_MSF_JOB_CACHE中获取msfrpc的Jobs,监听数据
         msfjobs = Job.list_msfrpc_jobs()
-
         if msfjobs is not None:
             for jobid in msfjobs:
                 datastore = msfjobs[jobid].get("datastore")
@@ -451,12 +422,9 @@ class HeartBeat(object):
                                                              "LPORT": datastore.get("LPORT"),
                                                              "LHOST": datastore.get("LHOST"),
                                                              "RHOST": datastore.get("RHOST")}
-        # logger.info("监听载荷数据为: {}".format(uuid_msfjobid))
 
-        # 从msf获取被控主机的session
         sessions = []
         session_info_dict = RpcClient.call(Method.SessionList, timeout=RPC_FRAMEWORK_API_REQ)
-        # logger.info("从msf获取到的session信息为: {}".format(session_info_dict))
         if session_info_dict is None:
             return []
 
@@ -464,7 +432,6 @@ class HeartBeat(object):
             logger.warning(session_info_dict.get('error_string'))
             return []
 
-        # session_info_dict {'5': {'type': 'meterpreter', 'tunnel_local': '172.16.12.135:1234', 'tunnel_peer': '172.16.12.131:49158', 'comm_channel_session': None, 'via_exploit': 'exploit/multi/handler', 'via_payload': 'payload/windows/x64/meterpreter/reverse_tcp', 'desc': 'Meterpreter', 'info': '', 'workspace': 'false', 'session_host': '172.16.12.131', 'session_port': 49158, 'target_host': '', 'username': 'unknown', 'uuid': '9xexzlqu', 'exploit_uuid': 'fe0e1230-90a8-013a-88e1-000c29627aa3', 'routes': [], 'arch': 'x64', 'name': 5, 'platform': 'windows', 'advanced_info': None, 'load_powershell': False, 'load_python': False, 'last_checkin': 1648521849}}
         sessionhosts = []
         for session_id_str in session_info_dict.keys():
             session_info = session_info_dict.get(session_id_str)
@@ -503,7 +470,6 @@ class HeartBeat(object):
                 tunnel_peer_ip = tunnel_peer.split(":")[0]
                 one_session['tunnel_peer_ip'] = tunnel_peer_ip
 
-                # 获取IP地理位置信息
                 one_session['tunnel_peer_locate_zh'] = IPGeo.get_ip_geo_str(tunnel_peer_ip, "zh-CN")
                 one_session['tunnel_peer_locate_en'] = IPGeo.get_ip_geo_str(tunnel_peer_ip, "en-US")
 
@@ -632,5 +598,4 @@ class HeartBeat(object):
                 Notice.send_info(f"发送自动编排任务: SID {add_session_dict.get(session_uuid).get('id')}",
                                  f"Send automation tasks: SID {add_session_dict.get(session_uuid).get('id')}")
 
-        # logger.info("更新后的session信息为: {}".format(json.dumps(sessions)))
         return sessions

@@ -33,13 +33,11 @@ from Msgrpc.Handle.webdelivery import WebDelivery
 class PayloadView(BaseView):
     def create(self, request, **kwargs):
         try:
-            # 从前端获取参数数据
             mname = request.data.get('mname')
             opts = request.data.get('opts')
             if isinstance(opts, str):
                 opts = json.loads(opts)
 
-            # 生成payload文件
             response = Payload.create(mname, opts)
 
             if isinstance(response, dict):
@@ -72,29 +70,14 @@ class JobView(BaseView):
 
 class HandlerView(BaseView):
     def list(self, request, **kwargs):
-        """
-        获取监听数据
-        :param request:
-        :param kwargs:
-        :return:
-        """
         data = Handler.list()
         return Response(data)
 
     def create(self, request, **kwargs):
-        """
-        新增监听
-        :param request:
-        :param kwargs:
-        :return:
-        """
         try:
-            # 从前端获取新增监听参数
             opts = request.data.get('opts')
-            # {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'ExitOnSession': False, 'LHOST': '172.16.12.135', 'LPORT': 1234}
             if isinstance(opts, str):
                 opts = json.loads(opts)
-            # 新增监听
             context = Handler.create(opts)
         except Exception as E:
             logger.error(E)
@@ -174,12 +157,6 @@ class SessionIOView(BaseView):
 
 class SessionView(BaseView):
     def list(self, request, **kwargs):
-        """
-        获取session相关信息,权限信息等
-        :param request:
-        :param kwargs:
-        :return:
-        """
         try:
             sessionid = int(request.query_params.get('sessionid'))
             context = Session.list(sessionid=sessionid)
@@ -189,12 +166,6 @@ class SessionView(BaseView):
         return Response(context)
 
     def update(self, request, **kwargs):
-        """
-        更新session相关信息,权限信息等
-        :param request:
-        :param kwargs:
-        :return:
-        """
         try:
             sessionid = int(request.data.get('sessionid'))
             context = Session.update(sessionid=sessionid)
@@ -206,13 +177,6 @@ class SessionView(BaseView):
             return Response(context)
 
     def destroy(self, request, pk=None, **kwargs):
-        """
-        删除session信息
-        :param request:
-        :param pk:
-        :param kwargs:
-        :return:
-        """
         try:
             sessionid = int(request.query_params.get('sessionid'))
             context = Session.destroy(sessionid)
@@ -454,13 +418,7 @@ class FileMsfView(BaseView):
 
 class FileSessionView(BaseView):
     def list(self, request, **kwargs):
-        """
-        查询数据库中的信息
-        /api/v1/msgrpc/filesession/?sessionid=11&operation=pwd
-        :param request:
-        :param kwargs:
-        :return:
-        """
+        """查询数据库中的信息"""
         try:
             operation = request.query_params.get('operation')
             sessionid = int(request.query_params.get('sessionid'))

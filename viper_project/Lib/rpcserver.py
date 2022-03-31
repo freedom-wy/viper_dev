@@ -23,7 +23,6 @@ class RPCServer(object):
         while True:
             message_queue, message = self.redis_server.blpop(self.message_queue)
             message_queue = message_queue.decode()
-            logger.info("rpc_queue中的数据为: {}-{}".format(message_queue, message))
             if message_queue != self.message_queue:
                 logger.warning(f"message_queue 错误: {message_queue} {self.message_queue}")
                 continue
@@ -37,18 +36,10 @@ class RPCServer(object):
                 logger.warning("请求解析失败")
                 logger.exception(E)
                 continue
-            # 对获取到的数据进行检查
             rpc_response = self.function_map(function, kwargs)
-            logger.info("rpc_response数据为: {}".format(rpc_response))
             self.redis_server.rpush(response_queue, json.dumps(rpc_response))
 
     def function_map(self, function, kwargs):
-        """
-        对获取到的数据进行检查？
-        :param function:
-        :param kwargs:
-        :return:
-        """
         if function == "IPFilter.is_allow":
             try:
                 return IPFilter.is_allow(**kwargs)

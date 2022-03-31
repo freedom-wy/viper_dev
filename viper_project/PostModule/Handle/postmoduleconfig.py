@@ -214,7 +214,6 @@ class PostModuleConfig(object):
         logger.warning(f"内置模块加载完成,加载{viper_module_count}个模块")
         Notice.send_info(f"内置模块加载完成,加载{viper_module_count}个模块",
                          f"The built-in modules is loaded, {viper_module_count} modules has loaded")
-
         # 自定义模块
         diy_module_count = 0
         modulenames = os.listdir(os.path.join(settings.BASE_DIR, 'Docker', "module"))
@@ -284,7 +283,6 @@ class PostModuleConfig(object):
                          f"The customize modules is loaded, {diy_module_count} modules has loaded")
 
         all_modules_config.sort(key=lambda s: (TAG2TYPE.get_moduletype_order(s.get('MODULETYPE')), s.get('loadpath')))
-        # 将所有模块信息设置到redis中
         if Xcache.update_moduleconfigs(all_modules_config):
             return len(all_modules_config)
         else:

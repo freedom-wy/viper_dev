@@ -96,7 +96,6 @@ class SessionLib(object):
                         'UACINFO': self._uacinfo}
                 result = MSFModule.run_msf_module_realtime(module_type=module_type, mname=mname, opts=opts,
                                                            timeout=RPC_SESSION_OPER_LONG_REQ)
-                # logger.info("扩展信息为: {}".format(result))
                 if result is None:
                     Notice.send_warning("更新Session信息失败,请稍后重试",
                                         "Failed to update Session information, please try again later")
@@ -114,12 +113,7 @@ class SessionLib(object):
                                     "Failed to update Session information, please try again later")
 
     def _set_base_info(self):
-        """
-        通过msf获取基本信息
-        :return:
-        """
         info = RpcClient.call(Method.SessionGet, [self.sessionid], timeout=RPC_FRAMEWORK_API_REQ)
-        # logger.info("从MSF获取到的session基本信息为: {}".format(json.dumps(info)))
         if info is None:
             return False
         # 处理linux的no-user问题

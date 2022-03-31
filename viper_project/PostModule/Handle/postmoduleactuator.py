@@ -25,7 +25,6 @@ class PostModuleActuator(object):
 
     @staticmethod
     def create_post(loadpath=None, sessionid=None, ipaddress=None, custom_param=None):
-        # MODULES.DefenseEvasion_ProcessInjection_ProcessHandle
         module_config = Xcache.get_moduleconfig(loadpath)
         # 获取模块配置
         if module_config is None:
