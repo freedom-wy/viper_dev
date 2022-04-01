@@ -28,6 +28,7 @@ class MSFModule(object):
                   opts,
                   runasjob,
                   timeout]
+        logger.info("远程调用Msf: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=timeout)
         return result
 

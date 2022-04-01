@@ -38,6 +38,7 @@ class RpcClient(object):
                 logger.warning("params 必须是list类型")
                 return None
         json_data = json.dumps(data)
+        logger.info("远程调用Msf的数据为: {}".format(json_data))
         try:
             r = req_session.post(JSON_RPC_URL, headers=_headers, data=json_data, timeout=(1.05, timeout))
         except Exception as _:

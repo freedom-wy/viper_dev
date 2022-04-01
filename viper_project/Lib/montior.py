@@ -53,7 +53,7 @@ class MainMonitor(object):
         # 加载历史监听
         handler_list = Xcache.get_cache_handlers()
         # 创建监听备份
-        # Handler.recovery_cache_last_handler(handler_list)
+        Handler.recovery_cache_last_handler(handler_list)
 
         # Xcache初始化部分
         Xcache.init_xcache_on_start()

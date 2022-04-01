@@ -124,6 +124,9 @@ class WebDeliveryView(BaseView):
 
 
 class SessionIOView(BaseView):
+    """
+    session下的命令终端
+    """
     def create(self, request, **kwargs):
         try:
             ipaddress = request.data.get('ipaddress')
@@ -418,7 +421,13 @@ class FileMsfView(BaseView):
 
 class FileSessionView(BaseView):
     def list(self, request, **kwargs):
-        """查询数据库中的信息"""
+        """
+        文件管理
+        /api/v1/msgrpc/filesession/?sessionid=9&operation=pwd
+        :param request:
+        :param kwargs:
+        :return:
+        """
         try:
             operation = request.query_params.get('operation')
             sessionid = int(request.query_params.get('sessionid'))

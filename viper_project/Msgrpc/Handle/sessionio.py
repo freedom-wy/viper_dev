@@ -15,6 +15,13 @@ class SessionIO(object):
 
     @staticmethod
     def create(ipaddress=None, sessionid=None, user_input=None):
+        """
+        命令终端-用户输入
+        :param ipaddress:
+        :param sessionid:
+        :param user_input:
+        :return:
+        """
         try:
             user_input = user_input.strip()
 
@@ -54,7 +61,14 @@ class SessionIO(object):
 
     @staticmethod
     def update(ipaddress=None, sessionid=None):
+        """
+        命令终端-终端显示
+        :param ipaddress:
+        :param sessionid:
+        :return:
+        """
         old_result = Xcache.get_sessionio_cache(ipaddress)
+        logger.info("命令终端缓存为: {}".format(old_result))
         if sessionid is None or sessionid == -1:
             context = data_return(202, old_result, SessionIO_MSG_ZH.get(202), SessionIO_MSG_EN.get(202))
             return context
