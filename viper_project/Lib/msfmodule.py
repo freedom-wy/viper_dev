@@ -90,7 +90,7 @@ class MSFModule(object):
         # 解析报文
         try:
             msf_module_return_dict = json.loads(body)
-            logger.info("msf订阅消息: {}".format(msf_module_return_dict))
+            logger.info("MSF_RPC_RESULT_CHANNEL订阅消息: {}".format(msf_module_return_dict))
         except Exception as E:
             logger.error(E)
             return False
@@ -98,7 +98,7 @@ class MSFModule(object):
         # 获取对应模块实例
         try:
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
-            logger.info("从队列获取到的消息: {}".format(req))
+            logger.info("从队列XCACHE_MODULES_TASK_LIST获取到的消息: {}".format(req))
         except Exception as E:
             logger.error(E)
             return False
@@ -147,9 +147,10 @@ class MSFModule(object):
         try:
             # 从msf获取到的订阅消息
             msf_module_return_dict = json.loads(body)
-            # logger.info("msf订阅消息: {}".format(msf_module_return_dict))
+            logger.info("MSF_RPC_DATA_CHANNEL订阅消息: {}".format(msf_module_return_dict))
             # 从队列获取到的消息
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
+            logger.info("从队列XCACHE_MODULES_TASK_LIST获取到的消息: {}".format(req))
         except Exception as E:
             logger.error(E)
             return False
@@ -190,6 +191,7 @@ class MSFModule(object):
         body = message.get('data')
         try:
             msf_module_logs_dict = json.loads(body)
+            logger.info("MSF_RPC_LOG_CHANNEL订阅消息: {}".format(msf_module_logs_dict))
             Notice.send(f"MSF >> {msf_module_logs_dict.get('content')}", level=msf_module_logs_dict.get("level"))
         except Exception as E:
             logger.error(E)

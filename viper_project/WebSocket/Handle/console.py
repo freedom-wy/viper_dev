@@ -156,6 +156,7 @@ class Console(object):
         body = message.get('data')
         try:
             msf_module_return_dict = json.loads(body)
+            logger.info("MSF_RPC_CONSOLE_PRINT订阅消息: {}".format(msf_module_return_dict))
             prompt = msf_module_return_dict.get("prompt")
             output = base64.b64decode(msf_module_return_dict.get("message"))
             chardet_result = chardet.detect(output)

@@ -196,6 +196,7 @@ class ProxyHttpScan(object):
         body = message.get('data')
         try:
             data_dict = json.loads(body)
+            logger.info("VIPER_PROXY_HTTP_SCAN_DATA获取订阅消息: {}".format(data_dict))
             request_data = data_dict.get("request")
             response_data = data_dict.get("response")
             data = data_dict.get("data")

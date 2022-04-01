@@ -27,6 +27,7 @@ class UUIDJson(object):
         body = message.get('data')
         try:
             uuid_json_dict = json.loads(body)
+            logger.info("VIPER_RPC_UUID_JSON_DATA队列获取到订阅消息: {}".format(uuid_json_dict))
             uuid = uuid_json_dict.get("UUID")
             tag = uuid_json_dict.get("TAG")
             level = uuid_json_dict.get("LEVEL")

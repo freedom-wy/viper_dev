@@ -22,6 +22,7 @@ class RPCServer(object):
         self.redis_server.delete(self.message_queue)
         while True:
             message_queue, message = self.redis_server.blpop(self.message_queue)
+            logger.info("队列: {}-数据: {}".format(message_queue, message))
             message_queue = message_queue.decode()
             if message_queue != self.message_queue:
                 logger.warning(f"message_queue 错误: {message_queue} {self.message_queue}")
