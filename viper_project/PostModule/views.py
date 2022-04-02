@@ -40,6 +40,7 @@ class PostModuleActuatorView(BaseView):
                 ipaddress = request.data.get('ipaddress')
                 loadpath = request.data.get('loadpath')
                 custom_param = request.data.get('custom_param')
+                # logger.info("执行PostModuleActuatorView视图_loadpath为: {}".format(loadpath))
                 context = PostModuleActuator.create_post(loadpath=loadpath,
                                                          sessionid=sessionid,
                                                          ipaddress=ipaddress,

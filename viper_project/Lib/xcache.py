@@ -331,6 +331,7 @@ class Xcache(object):
     def get_module_task_by_uuid_nowait(task_uuid):
         key = f"{Xcache.XCACHE_MODULES_TASK_LIST}_{task_uuid}"
         req = cache.get(key)
+        logger.info("从队列{}中取出数据: {}".format(key, req))
         return req
 
     @staticmethod
@@ -403,6 +404,7 @@ class Xcache(object):
     def get_module_result(ipaddress, loadpath):
         key = f"{Xcache.XCACHE_MODULES_RESULT}_{ipaddress}_{loadpath}"
         result_dict = cache.get(key)
+        logger.info("从队列{}中取出数据: {}".format(key, result_dict))
         if result_dict is None:
             return {"update_time": int(time.time()), "result": None}
         return result_dict
@@ -417,6 +419,7 @@ class Xcache(object):
     @staticmethod
     def add_module_result(ipaddress, loadpath, result):
         key = f"{Xcache.XCACHE_MODULES_RESULT}_{ipaddress}_{loadpath}"
+        logger.info("向队列{}中添加数据: {}".format(key, result))
         old_result = cache.get(key)
         if old_result is None:
             cache.set(key, {"update_time": int(time.time()), "result": [result]}, None)

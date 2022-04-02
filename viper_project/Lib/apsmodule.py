@@ -74,6 +74,7 @@ class APSModule(object):
             # print("EVENT_JOB_MODIFIED")
             pass
         elif event.code == EVENT_JOB_EXECUTED:  # 执行完成
+            # logger.info("监听到任务执行完毕")
             flag = self.store_executed_result(event.job_id)
         elif event.code == EVENT_JOB_ERROR:
             # print("EVENT_JOB_ERROR")

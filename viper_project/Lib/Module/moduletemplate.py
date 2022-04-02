@@ -798,6 +798,7 @@ class PostPythonModule(_PostCommonModule):
         self.log_error("模块中未实现run函数", "The run function is not implemented in the module")
 
     def _thread_run(self):
+        # logger.info("后台任务")
         t1 = ThreadWithExc(target=self.run)
         t1.start()
         while True:
@@ -813,6 +814,7 @@ class PostPythonModule(_PostCommonModule):
                         pass
                 break
             elif t1.is_alive() is not True:
+                # logger.info("身份证信息运行完毕")
                 break
             else:
                 time.sleep(1)
