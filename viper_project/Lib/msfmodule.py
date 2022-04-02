@@ -149,7 +149,7 @@ class MSFModule(object):
             # 从msf获取到的订阅消息
             msf_module_return_dict = json.loads(body)
             logger.info("MSF_RPC_DATA_CHANNEL订阅消息: {}".format(msf_module_return_dict))
-            # 从队列获取到的消息
+            # 从队列获取到的消息,通过uuid
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
             logger.info("从队列XCACHE_MODULES_TASK_LIST获取到的消息: {}".format(req))
         except Exception as E:

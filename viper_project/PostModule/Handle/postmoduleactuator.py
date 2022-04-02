@@ -35,7 +35,7 @@ class PostModuleActuator(object):
         # 处理模块参数
         try:
             custom_param = json.loads(custom_param)
-            logger.info("custom_param的数据为: {}".format(json.dumps(custom_param)))
+            # logger.info("custom_param的数据为: {}".format(json.dumps(custom_param)))
         except Exception as E:
             logger.warning(E)
             custom_param = {}
