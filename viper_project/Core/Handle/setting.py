@@ -325,7 +325,7 @@ class Settings(object):
             data = content.decode(chardet_result['encoding'] or 'utf-8', 'ignore')
         except UnicodeDecodeError as e:
             data = content.decode('utf-8', 'ignore')
-        logger.info("VIPER_SEND_SMS_CHANNEL订阅消息: {}".format(data))
+
         flag = False
         send_result = Settings._send_telegram_message(data)
         if len(send_result) > 0:

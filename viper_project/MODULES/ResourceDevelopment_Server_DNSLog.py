@@ -12,6 +12,7 @@ from dnslib import RR, QTYPE, RCODE, TXT, DNSLabel, A
 from dnslib.server import DNSServer, BaseResolver
 
 from Lib.ModuleAPI import *
+from Lib.log import logger as logger_viper
 
 
 class DnsLogger():
@@ -215,4 +216,5 @@ class PostModule(PostPythonModule):
                 time.sleep(1)
             except Exception as E:
                 break
+        logger_viper.info("exit_flag: {}, 停止DNSlog".format(self.exit_flag))
         udp_server.stop()

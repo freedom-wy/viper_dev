@@ -5,7 +5,6 @@
 
 
 from Lib.ModuleAPI import *
-from Lib.log import logger
 
 
 class PostModule(PostMSFRawModule):

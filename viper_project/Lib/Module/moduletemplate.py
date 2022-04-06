@@ -798,13 +798,12 @@ class PostPythonModule(_PostCommonModule):
         self.log_error("模块中未实现run函数", "The run function is not implemented in the module")
 
     def _thread_run(self):
-        # logger.info("后台任务")
         t1 = ThreadWithExc(target=self.run)
         t1.start()
         while True:
             req = Xcache.get_module_task_by_uuid_nowait(self._module_uuid)
             if req is None:  # 检查模块是否已经删除
-                self.exit_flag = True
+                self.exit_flag = True  # 退出模块
                 time.sleep(3)
                 while t1.is_alive():
                     time.sleep(0.1)
@@ -814,7 +813,7 @@ class PostPythonModule(_PostCommonModule):
                         pass
                 break
             elif t1.is_alive() is not True:
-                # logger.info("身份证信息运行完毕")
+                logger.info("已无该进程")
                 break
             else:
                 time.sleep(1)

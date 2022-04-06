@@ -27,12 +27,6 @@ class PostModuleConfigView(BaseView):
 
 class PostModuleActuatorView(BaseView):
     def create(self, request, **kwargs):
-        """
-        模块操作
-        :param request:
-        :param kwargs:
-        :return:
-        """
         moduletype = request.data.get('moduletype')
         if moduletype is None:  # 默认模块
             try:
@@ -40,7 +34,6 @@ class PostModuleActuatorView(BaseView):
                 ipaddress = request.data.get('ipaddress')
                 loadpath = request.data.get('loadpath')
                 custom_param = request.data.get('custom_param')
-                # logger.info("执行PostModuleActuatorView视图_loadpath为: {}".format(loadpath))
                 context = PostModuleActuator.create_post(loadpath=loadpath,
                                                          sessionid=sessionid,
                                                          ipaddress=ipaddress,
@@ -68,12 +61,6 @@ class PostModuleActuatorView(BaseView):
 
 class PostModuleResultView(BaseView):
     def list(self, request, **kwargs):
-        """
-        运行信息: MODULES.HostBaseInfoModule
-        :param request:
-        :param kwargs:
-        :return:
-        """
         try:
             ipaddress = request.query_params.get('ipaddress')
             loadpath = request.query_params.get('loadpath')

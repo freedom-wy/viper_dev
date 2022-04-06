@@ -74,7 +74,6 @@ class APSModule(object):
             # print("EVENT_JOB_MODIFIED")
             pass
         elif event.code == EVENT_JOB_EXECUTED:  # 执行完成
-            # logger.info("监听到任务执行完毕")
             flag = self.store_executed_result(event.job_id)
         elif event.code == EVENT_JOB_ERROR:
             # print("EVENT_JOB_ERROR")
@@ -150,7 +149,9 @@ class APSModule(object):
         # 存储已经生成的结果
         try:
             module_common_instance.log_warning("用户手动删除任务", "User manually delete task")
+            logger.info("退出值: {}".format(module_common_instance.exit_flag))
             module_common_instance._store_result_in_history()
+            logger.info("退出值: {}".format(module_common_instance.exit_flag))
         except Exception as E:
             logger.error(f"删除多模块实例异常:{module_common_instance.NAME_ZH} 异常信息: {E}")
             logger.error(E)
@@ -160,6 +161,7 @@ class APSModule(object):
         Notice.send_info(f"模块: {module_common_instance.NAME_ZH} {module_common_instance._target_str} 手动删除",
                          f"Module:<{module_common_instance.NAME_EN}> {module_common_instance._target_str} manually delete")
         logger.warning(f"多模块实例手动删除:{module_common_instance.NAME_ZH}")
+        logger.info("退出值: {}".format(module_common_instance.exit_flag))
         return True
 
 

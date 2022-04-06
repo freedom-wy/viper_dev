@@ -7,6 +7,7 @@ import os
 import time
 import zipfile
 from urllib import parse
+import json
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -19,6 +20,8 @@ from Lib.gcc import Gcc, GCC_INCULDE_DIR, GCC_CODE_TEMPLATE_DIR
 from Lib.mingw import MINGW_CODE_TEMPLATE_DIR, Mingw, MINGW_INCULDE_DIR
 from Lib.msfmodule import MSFModule
 from Lib.notice import Notice
+from Lib.log import logger
+
 
 
 class Payload(object):
@@ -342,12 +345,13 @@ class Payload(object):
             opts["Format"] = 'py'
         elif "php" in mname:
             opts["Format"] = 'raw'
-
+        logger.info("生成shellcode发送给msf参数为: {}".format(json.dumps(opts)))
         result = MSFModule.run_msf_module_realtime(module_type="payload", mname=mname, opts=opts,
                                                    timeout=RPC_FRAMEWORK_API_REQ)
         if result is None:
             return result
         byteresult = base64.b64decode(result.get('payload'))
+        logger.info("msf返回的shellcode: {}".format(byteresult))
         return byteresult
 
     @staticmethod

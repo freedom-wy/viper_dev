@@ -29,14 +29,12 @@ router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")
 router.register(r'api/v1/msgrpc/webdelivery', WebDeliveryView, basename="WebDelivery")
 router.register(r'api/v1/msgrpc/session', SessionView, basename="Session")
-# session下的命令终端
 router.register(r'api/v1/msgrpc/sessionio', SessionIOView, basename="SessionIO")
 router.register(r'api/v1/msgrpc/route', RouteView, basename="Route")
 router.register(r'api/v1/msgrpc/socks', SocksView, basename="Socks")
 router.register(r'api/v1/msgrpc/portfwd', PortFwdView, basename="PortFwd")
 router.register(r'api/v1/msgrpc/transport', TransportView, basename="Transport")
 router.register(r'api/v1/msgrpc/filemsf', FileMsfView, basename="FileMsfView")
-# 文件管理
 router.register(r'api/v1/msgrpc/filesession', FileSessionView, basename="FileSessionView")
 router.register(r'api/v1/msgrpc/lazyloader', LazyLoaderView, basename="LazyLoaderView")
 router.register(r'api/v1/msgrpc/collectsandbox', CollectSandBoxView, basename="CollectSandBoxView")
@@ -46,9 +44,7 @@ router.register(r'api/v1/postlateral/portservice', PortServiceView, basename="Po
 router.register(r'api/v1/postlateral/credential', CredentialView, basename="CredentialView")
 router.register(r'api/v1/postlateral/vulnerability', VulnerabilityView, basename="VulnerabilityView")
 router.register(r'api/v1/postmodule/postmoduleconfig', PostModuleConfigView, basename="PostModuleConfig")
-# 操作模块-进程注入等
 router.register(r'api/v1/postmodule/postmoduleactuator', PostModuleActuatorView, basename="PostModuleActuator")
-# 运行信息
 router.register(r'api/v1/postmodule/postmoduleresult', PostModuleResultView, basename="PostModuleResult")
 router.register(r'api/v1/postmodule/postmoduleresulthistory', PostModuleResultHistoryView,
                 basename="PostModuleResultHistoryView")

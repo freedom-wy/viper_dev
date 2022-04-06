@@ -76,7 +76,6 @@ class PostModuleAuto(object):
         # 解析报文
         try:
             session = json.loads(session_json)
-            logger.info("VIPER_POSTMODULE_AUTO_CHANNEL订阅消息: {}".format(session))
         except Exception as E:
             logger.error(E)
             return False

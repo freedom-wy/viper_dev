@@ -30,7 +30,6 @@ class Handler(object):
     def list_handler():
         handlers = []
         infos = Job.list_msfrpc_jobs()
-        # logger.info("从XCACHE_MSF_JOB_CACHE中获取msf监听数据: {}".format(infos))
         if infos is None:
             return handlers
         for key in infos.keys():
@@ -56,7 +55,6 @@ class Handler(object):
         Xcache.set_cache_handlers(handlers)
         # 获取虚拟监听
         virtual_handlers = Xcache.get_virtual_handlers()
-        # logger.info("从XCACHE_HADLER_VIRTUAL_LIST获取虚拟监听数据: {}".format(virtual_handlers))
         handlers.extend(virtual_handlers)
 
         # 特殊参数处理
