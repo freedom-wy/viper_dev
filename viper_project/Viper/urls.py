@@ -48,6 +48,7 @@ router.register(r'api/v1/postmodule/postmoduleactuator', PostModuleActuatorView,
 router.register(r'api/v1/postmodule/postmoduleresult', PostModuleResultView, basename="PostModuleResult")
 router.register(r'api/v1/postmodule/postmoduleresulthistory', PostModuleResultHistoryView,
                 basename="PostModuleResultHistoryView")
+# 自动编排
 router.register(r'api/v1/postmodule/postmoduleauto', PostModuleAutoView,
                 basename="PostModuleAutoView")
 router.register(r'api/v1/postmodule/proxyhttpscan', ProxyHttpScanView,
