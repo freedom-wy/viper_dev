@@ -6,6 +6,7 @@ import logging
 import random
 import socket
 import time
+import json
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from asgiref.sync import async_to_sync
@@ -170,6 +171,7 @@ class MainMonitor(object):
         channel_layer = get_channel_layer()
 
         result = HeartBeat.get_heartbeat_result()
+        logger.info("sub_heartbeat_thread监听数据: {}".format(json.dumps(result, ensure_ascii=False)))
         async_to_sync(channel_layer.group_send)(
             "heartbeat",
             {

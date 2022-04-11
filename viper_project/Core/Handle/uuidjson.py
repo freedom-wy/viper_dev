@@ -25,6 +25,7 @@ class UUIDJson(object):
     def store_data_from_sub(message=None):
         """处理msf发送的notice信息print_XXX_redis"""
         body = message.get('data')
+        logger.info("sub_rpc_uuid_json_thread监听数据: {}".format(body))
         try:
             uuid_json_dict = json.loads(body)
             uuid = uuid_json_dict.get("UUID")

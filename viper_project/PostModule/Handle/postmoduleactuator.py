@@ -26,7 +26,6 @@ class PostModuleActuator(object):
     @staticmethod
     def create_post(loadpath=None, sessionid=None, ipaddress=None, custom_param=None):
         module_config = Xcache.get_moduleconfig(loadpath)
-        logger.info("module_config的数据为: {}".format(json.dumps(module_config)))
         # 获取模块配置
         if module_config is None:
             context = data_return(305, {}, PostModuleActuator_MSG_ZH.get(305), PostModuleActuator_MSG_EN.get(305))
@@ -34,7 +33,6 @@ class PostModuleActuator(object):
 
         # 处理模块参数
         try:
-            logger.info("custom_param的数据为: {}".format(custom_param))
             custom_param = json.loads(custom_param)
         except Exception as E:
             logger.warning(E)

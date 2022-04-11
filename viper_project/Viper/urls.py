@@ -11,7 +11,6 @@ from Msgrpc.views import WebDeliveryView, IPFilterView
 from PostLateral.views import PortServiceView, CredentialView, VulnerabilityView
 from PostModule.views import PostModuleConfigView, PostModuleActuatorView, PostModuleResultView, ProxyHttpScanView
 from PostModule.views import PostModuleResultHistoryView, PostModuleAutoView
-from Webhook.views import TheHiveView
 
 router = routers.DefaultRouter()
 router.register(r'api/v1/core/baseauth', BaseAuthView, basename="BaseAuth")
@@ -48,7 +47,6 @@ router.register(r'api/v1/postmodule/postmoduleactuator', PostModuleActuatorView,
 router.register(r'api/v1/postmodule/postmoduleresult', PostModuleResultView, basename="PostModuleResult")
 router.register(r'api/v1/postmodule/postmoduleresulthistory', PostModuleResultHistoryView,
                 basename="PostModuleResultHistoryView")
-# 自动编排
 router.register(r'api/v1/postmodule/postmoduleauto', PostModuleAutoView,
                 basename="PostModuleAutoView")
 router.register(r'api/v1/postmodule/proxyhttpscan', ProxyHttpScanView,
@@ -57,7 +55,6 @@ router.register(r'api/v1/postmodule/proxyhttpscan', ProxyHttpScanView,
 router.register(r'api/v1/d', HostFileView, basename="HostFileView")
 router.register(r'api/v1/c', LazyLoaderInterfaceView, basename="LazyLoaderInterfaceView")
 router.register(r'api/v1/a', CollectSandBoxInterfaceView, basename="CollectSandBoxInterfaceView")
-router.register(r'api/v1/webhook/thehive', TheHiveView, basename="TheHiveView")
 
 urlpatterns = [
     url(r'^', include(router.urls)),

@@ -22,7 +22,7 @@ class RPCServer(object):
         self.redis_server.delete(self.message_queue)
         while True:
             message_queue, message = self.redis_server.blpop(self.message_queue)
-            logger.info("message_queue和Message数据为: {}-{}".format(message_queue, message.decode()))
+            logger.info("message_queue, message的数据为: {}-{}".format(message_queue, message))
             message_queue = message_queue.decode()
             if message_queue != self.message_queue:
                 logger.warning(f"message_queue 错误: {message_queue} {self.message_queue}")
@@ -37,9 +37,7 @@ class RPCServer(object):
                 logger.warning("请求解析失败")
                 logger.exception(E)
                 continue
-
             rpc_response = self.function_map(function, kwargs)
-            logger.info("向response_queue队列: {}发送数据: {}".format(response_queue, rpc_response))
             self.redis_server.rpush(response_queue, json.dumps(rpc_response))
 
     def function_map(self, function, kwargs):

@@ -160,10 +160,8 @@ class _CommonModule(object):
 
     def generate_context_by_template(self, filename, **kwargs):
         """根据模板获取内容"""
-        logger.info("kwargs的值为: {}".format(kwargs))
         env = Environment(loader=FileSystemLoader(self.module_data_dir))
-        # logger.info("env的数据为: {}".format(env))
-        tpl = env.get_template(filename)  # main.cpp
+        tpl = env.get_template(filename)
         context = tpl.render(**kwargs)
         return context
 
@@ -805,7 +803,7 @@ class PostPythonModule(_PostCommonModule):
         while True:
             req = Xcache.get_module_task_by_uuid_nowait(self._module_uuid)
             if req is None:  # 检查模块是否已经删除
-                self.exit_flag = True  # 退出模块
+                self.exit_flag = True
                 time.sleep(3)
                 while t1.is_alive():
                     time.sleep(0.1)
@@ -815,7 +813,6 @@ class PostPythonModule(_PostCommonModule):
                         pass
                 break
             elif t1.is_alive() is not True:
-                logger.info("已无该进程")
                 break
             else:
                 time.sleep(1)

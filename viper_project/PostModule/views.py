@@ -32,7 +32,7 @@ class PostModuleActuatorView(BaseView):
             try:
                 sessionid = int(request.data.get('sessionid'))
                 ipaddress = request.data.get('ipaddress')
-                loadpath = request.data.get('loadpath')  # 模块路径
+                loadpath = request.data.get('loadpath')
                 custom_param = request.data.get('custom_param')
                 context = PostModuleActuator.create_post(loadpath=loadpath,
                                                          sessionid=sessionid,
