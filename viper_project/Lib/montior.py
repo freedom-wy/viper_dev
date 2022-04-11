@@ -171,7 +171,7 @@ class MainMonitor(object):
         channel_layer = get_channel_layer()
 
         result = HeartBeat.get_heartbeat_result()
-        logger.info("sub_heartbeat_thread监听数据: {}".format(json.dumps(result, ensure_ascii=False)))
+        # logger.info("sub_heartbeat_thread监听数据: {}".format(json.dumps(result, ensure_ascii=False)))
         async_to_sync(channel_layer.group_send)(
             "heartbeat",
             {
