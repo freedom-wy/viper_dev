@@ -43,6 +43,7 @@ class MSFModule(object):
                   RPC_JOB_API_REQ  # 超时时间
                   ]
 
+        logger.info("发送给Msf参数为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=RPC_JOB_API_REQ)
         if result is None:
             Notice.send_warning(f"渗透服务连接失败,无法执行模块 :{msf_module.NAME_ZH}",

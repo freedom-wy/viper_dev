@@ -7,6 +7,7 @@
 from Lib.configs import RPC_JOB_API_REQ, RPC_RUN_MODULE_LONG
 from Lib.method import Method
 from Lib.rpcclient import RpcClient
+from Lib.log import logger
 
 
 class MsfModule(object):
@@ -23,6 +24,7 @@ class MsfModule(object):
                   opts,
                   False,
                   timeout]
+        logger.info("发送给Msf参数为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=timeout)
         return result
 
