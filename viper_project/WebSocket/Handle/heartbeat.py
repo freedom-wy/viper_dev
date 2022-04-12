@@ -176,7 +176,6 @@ class HeartBeat(object):
 
         hosts = Host.list_hosts()
         sessions = HeartBeat.list_sessions()
-        # logger.info("session信息为: {}".format(sessions))
 
         # 初始化session列表
         for host in hosts:

@@ -131,13 +131,11 @@ class Handler(object):
     def create(opts=None):
         # 所有的参数必须大写
         # opts = {'PAYLOAD': payload, 'LHOST': LHOST, 'LPORT': LPORT, 'RHOST': RHOST}
-        # 通过虚拟监听创建真实监听
         if opts.get('VIRTUALHANDLER') is True:  # 虚拟监听
             opts.pop('VIRTUALHANDLER')
             opts = Handler.create_virtual_handler(opts)
             context = data_return(201, opts, Handler_MSG_ZH.get(201), Handler_MSG_EN.get(201))
         else:
-            # 前端传递过来的真实监听参数
             # 清理参数
             try:
                 opts.pop("Backup")
@@ -215,7 +213,6 @@ class Handler(object):
                 context = data_return(500, {}, CODE_MSG_ZH.get(500), CODE_MSG_EN.get(500))
                 return context
 
-            # 发送给msf创建监听
             result = MSFModule.run_msf_module_realtime(module_type="exploit", mname="multi/handler", opts=opts,
                                                        runasjob=True,
                                                        timeout=RPC_JOB_API_REQ)

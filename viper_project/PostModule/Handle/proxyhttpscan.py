@@ -194,7 +194,7 @@ class ProxyHttpScan(object):
     def store_request_response_from_sub(message=None):
         """处理msf发送的notice信息print_XXX_redis"""
         body = message.get('data')
-        logger.info("sub_proxy_http_scan_thread监听数据: {}".format(body))
+        logger.info("sub_proxy_http_scan_thread订阅数据: {}".format(body))
         try:
             data_dict = json.loads(body)
             request_data = data_dict.get("request")
