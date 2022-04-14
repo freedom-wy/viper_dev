@@ -40,6 +40,7 @@ router.register(r'api/v1/msgrpc/collectsandbox', CollectSandBoxView, basename="C
 router.register(r'api/v1/msgrpc/ipfilter', IPFilterView, basename="IPFilterView")
 
 router.register(r'api/v1/postlateral/portservice', PortServiceView, basename="PortServiceView")
+# 凭证列表
 router.register(r'api/v1/postlateral/credential', CredentialView, basename="CredentialView")
 router.register(r'api/v1/postlateral/vulnerability', VulnerabilityView, basename="VulnerabilityView")
 router.register(r'api/v1/postmodule/postmoduleconfig', PostModuleConfigView, basename="PostModuleConfig")
