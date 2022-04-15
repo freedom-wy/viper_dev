@@ -127,3 +127,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/
+.venv/
+viper_demo/config/secure_config.py
