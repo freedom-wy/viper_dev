@@ -18,6 +18,7 @@ class Job(object):
         try:
             result = RpcClient.call(Method.JobList, timeout=RPC_FRAMEWORK_API_REQ)
             # Xcache.set_msf_job_cache(result)
+            logger.info("msf中存在的监听为: {}".format(result))
             if result is None:
                 return False
             else:

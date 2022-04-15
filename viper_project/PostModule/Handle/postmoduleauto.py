@@ -73,7 +73,6 @@ class PostModuleAuto(object):
     @staticmethod
     def handle_task(message):
         session_json = message.get('data')
-        logger.info("sub_postmodule_auto_handle_thread订阅数据: {}".format(session_json))
         # 解析报文
         try:
             session = json.loads(session_json)

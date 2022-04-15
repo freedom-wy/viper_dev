@@ -25,7 +25,6 @@ router.register(r'api/v1/core/networksearch', NetworkSearchView, basename="Netwo
 router.register(r'api/v1/msgrpc/servicestatus', ServiceStatusView, basename="ServiceStatus")
 router.register(r'api/v1/msgrpc/payload', PayloadView, basename="Payload")
 router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
-# 创建监听
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")
 router.register(r'api/v1/msgrpc/webdelivery', WebDeliveryView, basename="WebDelivery")
 router.register(r'api/v1/msgrpc/session', SessionView, basename="Session")
@@ -41,7 +40,6 @@ router.register(r'api/v1/msgrpc/collectsandbox', CollectSandBoxView, basename="C
 router.register(r'api/v1/msgrpc/ipfilter', IPFilterView, basename="IPFilterView")
 
 router.register(r'api/v1/postlateral/portservice', PortServiceView, basename="PortServiceView")
-# 凭证列表
 router.register(r'api/v1/postlateral/credential', CredentialView, basename="CredentialView")
 router.register(r'api/v1/postlateral/vulnerability', VulnerabilityView, basename="VulnerabilityView")
 router.register(r'api/v1/postmodule/postmoduleconfig', PostModuleConfigView, basename="PostModuleConfig")

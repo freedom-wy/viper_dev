@@ -803,7 +803,6 @@ class PostPythonModule(_PostCommonModule):
         while True:
             req = Xcache.get_module_task_by_uuid_nowait(self._module_uuid)
             if req is None:  # 检查模块是否已经删除
-                logger.info("python运行模块已从XCACHE_MODULES_TASK_LIST中删除")
                 self.exit_flag = True
                 time.sleep(3)
                 while t1.is_alive():
@@ -814,7 +813,6 @@ class PostPythonModule(_PostCommonModule):
                         pass
                 break
             elif t1.is_alive() is not True:
-                logger.info("python运行模块进程已结束")
                 break
             else:
                 time.sleep(1)

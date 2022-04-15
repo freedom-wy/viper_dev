@@ -86,6 +86,7 @@ class Handle(object):
         result = MSFModule.run_msf_module_realtime(module_type="exploit", mname="multi/handler", opts=opts,
                                                    runasjob=True,
                                                    timeout=RPC_JOB_API_REQ)
+        logger.info("msf返回数据为: {}".format(result))
         if isinstance(result, dict) is not True or result.get('job_id') is None:
             logger.info("创建监听失败")
         else:

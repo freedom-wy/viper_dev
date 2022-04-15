@@ -36,7 +36,7 @@ class RpcClient(object):
         try:
             r = req_session.post(JSON_RPC_URL, headers=_headers, data=json_data, timeout=(2, timeout))
         except Exception as e:
-            pass
+            logger.info("错误信息为: {}".format(e))
             return None
         if r.status_code == 200:
             data_bytes = r.content

@@ -74,6 +74,7 @@ class HandlerView(BaseView):
         return Response(data)
 
     def create(self, request, **kwargs):
+        logger.info("创建监听时传递的数据为: {}".format(request.data))
         try:
             opts = request.data.get('opts')
             if isinstance(opts, str):

@@ -28,7 +28,7 @@ class MSFModule(object):
                   opts,
                   runasjob,
                   timeout]
-        logger.info("run_msf_module_realtime发送给msf参数: {}".format(params))
+        logger.info("发送给MSF的数据为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=timeout)
         return result
 
@@ -43,7 +43,6 @@ class MSFModule(object):
                   RPC_JOB_API_REQ  # 超时时间
                   ]
 
-        logger.info("发送给Msf参数为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=RPC_JOB_API_REQ)
         if result is None:
             Notice.send_warning(f"渗透服务连接失败,无法执行模块 :{msf_module.NAME_ZH}",
@@ -87,7 +86,6 @@ class MSFModule(object):
         # 'data': {'WHOAMI': 'nt authority\\system', 'IS_SYSTEM': True, }
         # }
         body = message.get('data')
-        logger.info("sub_msf_module_result_thread订阅数据: {}".format(body))
         # 解析报文
         try:
             msf_module_return_dict = json.loads(body)
@@ -143,7 +141,6 @@ class MSFModule(object):
     def store_monitor_from_sub(message=None):
         """处理msf模块发送的data信息pub_json_data"""
         body = message.get('data')
-        logger.info("sub_msf_module_data_thread订阅数据: {}".format(body))
         try:
             msf_module_return_dict = json.loads(body)
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
@@ -185,7 +182,6 @@ class MSFModule(object):
     def store_log_from_sub(message=None):
         """处理msf发送的notice信息print_XXX_redis"""
         body = message.get('data')
-        logger.info("sub_msf_module_log_thread订阅数据: {}".format(body))
         try:
             msf_module_logs_dict = json.loads(body)
             Notice.send(f"MSF >> {msf_module_logs_dict.get('content')}", level=msf_module_logs_dict.get("level"))
