@@ -25,6 +25,7 @@ router.register(r'api/v1/core/networksearch', NetworkSearchView, basename="Netwo
 router.register(r'api/v1/msgrpc/servicestatus', ServiceStatusView, basename="ServiceStatus")
 router.register(r'api/v1/msgrpc/payload', PayloadView, basename="Payload")
 router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
+# 创建监听
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")
 router.register(r'api/v1/msgrpc/webdelivery', WebDeliveryView, basename="WebDelivery")
 router.register(r'api/v1/msgrpc/session', SessionView, basename="Session")

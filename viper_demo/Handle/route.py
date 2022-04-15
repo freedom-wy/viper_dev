@@ -1,4 +1,4 @@
-from utils.rcpclient import RpcClient
+from utils.rpcclient import RpcClient
 from utils.method import Method
 
 
