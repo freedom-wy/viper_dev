@@ -227,7 +227,7 @@ class Payload(object):
         urlpart = parse.quote(os.path.splitext(filename)[0], 'utf-8')
         leftpart = os.path.splitext(filename)[-1]
         print(urlpart, leftpart)
-        response['Content-Disposition'] = f"{urlpart}{leftpart}"
-        # response["Content-Disposition"] = "test.exe"
+        # response['Content-Disposition'] = f"{urlpart}{leftpart}"
+        response["Content-Disposition"] = 'attachment;filename=test.exe'
         return response
         # return byteresult
