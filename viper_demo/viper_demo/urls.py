@@ -17,6 +17,7 @@ from django.contrib import admin
 from apps.demo.views import HostView, HandleView, PayloadView, SessionView
 from rest_framework import routers
 from django.urls import path, include, re_path
+from utils.montior import MainMonitor
 
 
 router = routers.DefaultRouter()
@@ -30,3 +31,6 @@ urlpatterns = [
     re_path("^", include(router.urls)),
     path('admin/', admin.site.urls),
 ]
+
+# 调用监控
+MainMonitor().start()

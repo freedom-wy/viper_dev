@@ -1,0 +1,6 @@
+APScheduler==3.9.1
+chardet==4.0.0
+Django==4.0.4
+djangorestframework==3.13.1
+redis==4.2.2
+requests==2.27.1
