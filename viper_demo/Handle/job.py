@@ -10,7 +10,7 @@ class Job(object):
         pass
 
     @staticmethod
-    def is_msf_job_alive(job_id):
+    def is_msf_job_alive(job_id=None):
         """
         查看MSF中是否存在该ID
         """
@@ -19,6 +19,8 @@ class Job(object):
             result = RpcClient.call(Method.JobList, timeout=RPC_FRAMEWORK_API_REQ)
             # Xcache.set_msf_job_cache(result)
             logger.info("msf中存在的监听为: {}".format(result))
+            if not job_id:
+                return result
             if result is None:
                 return False
             else:

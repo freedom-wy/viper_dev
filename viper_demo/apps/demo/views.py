@@ -30,11 +30,18 @@ class HostView(BaseView):
 
 
 class HandleView(BaseView):
-    """
-    添加监听
-    """
+
+    def list(self, request, *args, **kwargs):
+        """
+        监听列表
+        """
+        context = Handle.list()
+        return Response(data=context, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
+        """
+        创建监听
+        """
         opts = request.data.get("opts")
         if isinstance(opts, str):
             opts = json.loads(opts)

@@ -221,6 +221,7 @@ class Handler(object):
                 context = data_return(301, opts, Handler_MSG_ZH.get(301), Handler_MSG_EN.get(301))
             else:
                 job_id = int(result.get('job_id'))
+                # 向XCACHE_MSF_JOB_CACHE写入数据
                 if Job.is_msf_job_alive(job_id):
                     opts['ID'] = int(result.get('job_id'))
                     Notice.send_info(

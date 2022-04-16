@@ -10,6 +10,14 @@ class Handle(object):
         pass
 
     @staticmethod
+    def list():
+        """
+        监听列表
+        """
+        result = Job.is_msf_job_alive()
+        return result
+
+    @staticmethod
     def create(opts=None):
         """
         创建监听

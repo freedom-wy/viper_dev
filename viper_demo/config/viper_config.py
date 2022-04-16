@@ -7,7 +7,9 @@ RPC_JOB_API_REQ = 3  # 后台任务类请求
 JSON_RPC_IP = '172.16.171.129'
 JSON_RPC_PORT = 60005
 JSON_RPC_URL = f"http://{JSON_RPC_IP}:{JSON_RPC_PORT}/api/v1/json-rpc"
-REDIS_URL = f"unix://:{RPC_TOKEN}@/var/run/redis/redis-server.sock?db="
+# REDIS_URL = f"unix://:{RPC_TOKEN}@/var/run/redis/redis-server.sock?db="
+REDIS_HOST = "172.16.171.129"
+REDIS_PORT = 60004
 
 
 

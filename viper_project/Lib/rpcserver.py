@@ -38,6 +38,7 @@ class RPCServer(object):
                 logger.exception(E)
                 continue
             rpc_response = self.function_map(function, kwargs)
+            logger.info("向MSF队列发送消息: {}".format(rpc_response))
             self.redis_server.rpush(response_queue, json.dumps(rpc_response))
 
     def function_map(self, function, kwargs):

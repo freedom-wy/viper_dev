@@ -2,6 +2,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from .rpcserver import RPCServer
 from utils.log import logger
+import logging
 
 
 class MainMonitor(object):
@@ -10,6 +11,9 @@ class MainMonitor(object):
 
     def start(self):
         # 创建一个后台运行的监控线程
+        # 关闭apscheduler的警告
+        log = logging.getLogger('apscheduler.scheduler')
+        log.setLevel(logging.ERROR)
         self.MainScheduler = BackgroundScheduler()
 
         self.MainScheduler.add_job(
@@ -19,6 +23,7 @@ class MainMonitor(object):
             seconds=1,
             id="sub_msf_rpc_thread"
         )
+        self.MainScheduler.start()
 
     @staticmethod
     def sub_msf_rpc_thread():

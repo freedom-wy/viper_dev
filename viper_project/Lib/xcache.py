@@ -313,6 +313,7 @@ class Xcache(object):
 
     @staticmethod
     def set_msf_job_cache(msfjobs):
+        # XCACHE_MSF_JOB_CACHE
         cache.set(Xcache.XCACHE_MSF_JOB_CACHE, msfjobs, None)
         return True
 
