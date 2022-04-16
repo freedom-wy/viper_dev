@@ -23,7 +23,6 @@ router.register(r'api/v1/core/uuidjson', UUIDJsonView, basename="UUIDJsonView")
 
 router.register(r'api/v1/core/networksearch', NetworkSearchView, basename="NetworkSearch")
 router.register(r'api/v1/msgrpc/servicestatus', ServiceStatusView, basename="ServiceStatus")
-# 生成载荷
 router.register(r'api/v1/msgrpc/payload', PayloadView, basename="Payload")
 router.register(r'api/v1/msgrpc/job', JobView, basename="Job")
 router.register(r'api/v1/msgrpc/handler', HandlerView, basename="Handler")

@@ -32,7 +32,6 @@ from Msgrpc.Handle.webdelivery import WebDelivery
 
 class PayloadView(BaseView):
     def create(self, request, **kwargs):
-        logger.info("前端传递数据为: {}".format(request.data))
         try:
             mname = request.data.get('mname')
             opts = request.data.get('opts')
@@ -75,7 +74,6 @@ class HandlerView(BaseView):
         return Response(data)
 
     def create(self, request, **kwargs):
-        logger.info("创建监听时传递的数据为: {}".format(request.data))
         try:
             opts = request.data.get('opts')
             if isinstance(opts, str):

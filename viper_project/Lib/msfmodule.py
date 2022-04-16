@@ -28,7 +28,6 @@ class MSFModule(object):
                   opts,
                   runasjob,
                   timeout]
-        logger.info("发送给MSF的数据为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=timeout)
         return result
 
