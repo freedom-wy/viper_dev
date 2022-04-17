@@ -3,6 +3,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from .rpcserver import RPCServer
 from utils.log import logger
 import logging
+from utils.xcache import Xcache
+from utils.postmoduleconfig import PostModuleConfig
 
 
 class MainMonitor(object):
@@ -10,6 +12,13 @@ class MainMonitor(object):
         pass
 
     def start(self):
+        # 初始化缓存, 清理原有缓存
+        Xcache.init_xcache_on_start()
+
+        # 加载模块配置信息
+        PostModuleConfig.load_all_modules_config()
+
+
         # 创建一个后台运行的监控线程
         # 关闭apscheduler的警告
         log = logging.getLogger('apscheduler.scheduler')

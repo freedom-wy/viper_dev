@@ -22,7 +22,6 @@ class RPCServer(object):
         self.redis_server.delete(self.message_queue)
         while True:
             message_queue, message = self.redis_server.blpop(self.message_queue)
-            logger.info("message_queue: {}, message: {}".format(message_queue, message.decode()))
             message_queue = message_queue.decode()
             if message_queue != self.message_queue:
                 logger.warning(f"message_queue 错误: {message_queue} {self.message_queue}")
@@ -38,7 +37,6 @@ class RPCServer(object):
                 logger.exception(E)
                 continue
             rpc_response = self.function_map(function, kwargs)
-            logger.info("向MSF队列发送消息: {}".format(rpc_response))
             self.redis_server.rpush(response_queue, json.dumps(rpc_response))
 
     def function_map(self, function, kwargs):

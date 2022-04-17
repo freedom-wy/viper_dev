@@ -85,7 +85,6 @@ class MSFModule(object):
         # 'data': {'WHOAMI': 'nt authority\\system', 'IS_SYSTEM': True, }
         # }
         body = message.get('data')
-        logger.info("sub_msf_module_result_thread订阅数据: {}".format(body))
         # 解析报文
         try:
             msf_module_return_dict = json.loads(body)
@@ -141,7 +140,6 @@ class MSFModule(object):
     def store_monitor_from_sub(message=None):
         """处理msf模块发送的data信息pub_json_data"""
         body = message.get('data')
-        logger.info("sub_msf_module_data_thread订阅数据: {}".format(body))
         try:
             msf_module_return_dict = json.loads(body)
             req = Xcache.get_module_task_by_uuid(task_uuid=msf_module_return_dict.get("uuid"))
@@ -183,7 +181,6 @@ class MSFModule(object):
     def store_log_from_sub(message=None):
         """处理msf发送的notice信息print_XXX_redis"""
         body = message.get('data')
-        logger.info("sub_msf_module_log_thread订阅数据: {}".format(body))
         try:
             msf_module_logs_dict = json.loads(body)
             Notice.send(f"MSF >> {msf_module_logs_dict.get('content')}", level=msf_module_logs_dict.get("level"))

@@ -60,3 +60,4 @@ class PostPythonModule(_PostCommonModule):
         """
         具体模块执行的逻辑
         """
+        pass

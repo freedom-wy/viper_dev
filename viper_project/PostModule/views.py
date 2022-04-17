@@ -27,6 +27,7 @@ class PostModuleConfigView(BaseView):
 
 class PostModuleActuatorView(BaseView):
     def create(self, request, **kwargs):
+        logger.info("前端传递数据为: {}".format(request.data))
         moduletype = request.data.get('moduletype')
         if moduletype is None:  # 默认模块
             try:
