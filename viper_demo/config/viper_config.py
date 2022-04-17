@@ -12,5 +12,20 @@ REDIS_HOST = "172.16.171.129"
 REDIS_PORT = 60004
 
 
+class BROKER(object):
+    empty = "empty"
+    post_python_job = "post_python_job"
+    post_msf_job = "post_msf_job"
+
+
+class TAG2TYPE(object):
+    """
+    模块分类
+    """
+    example = "example"
+    internal = "internal"
+
+    # 内网渗透模块
+    Initial_Access = "Inittial_Access"  # 初始访问
 
 
