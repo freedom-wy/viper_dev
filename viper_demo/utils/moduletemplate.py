@@ -1,5 +1,8 @@
 from config.viper_config import BROKER
 from config.viper_config import TAG2TYPE
+import threading
+from utils.xcache import Xcache
+import time
 
 
 class _CommonModule(object):
@@ -55,6 +58,21 @@ class PostPythonModule(_PostCommonModule):
         super().__init__(sessionid, ipaddress, custom_param)
         # 模块是否退出
         self.exit_flag = False
+
+    def _thread_run(self):
+        t1 = threading.Thread(target=self.run)
+        t1.start()
+
+        while True:
+            # 可能手动删除
+            req = Xcache.get_module_task_by_uuid_nowait(self._module_uuid)
+            # 模块已执行完成
+            if not req:
+                break
+            elif not t1.is_alive():
+                break
+            else:
+                time.sleep(1)
 
     def run(self):
         """

@@ -98,3 +98,4 @@ class PostModuleActuatorView(BaseView):
                                                  sessionid=sessionid,
                                                  ipaddress=ipaddress,
                                                  custom_param=custom_param)
+        return Response(data=context, status=status.HTTP_200_OK)

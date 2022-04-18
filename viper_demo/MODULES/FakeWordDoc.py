@@ -2,6 +2,7 @@ from utils.moduletemplate import PostPythonModule
 from config.viper_config import TAG2TYPE
 from utils.option import OptionHandler, OptionStr, register_options
 from utils.log import logger
+import time
 
 
 class PostModule(PostPythonModule):
@@ -36,6 +37,7 @@ class PostModule(PostPythonModule):
         return True, None
 
     def run(self):
+        time.sleep(10)
         logger.info("执行具体模块")
 
 

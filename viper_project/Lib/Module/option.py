@@ -28,6 +28,7 @@ def register_options(options_list=None):
     try:
         for option in options_list:
             options.append(option.to_dict())
+        logger.info("options: {}".format(options))
         return options
     except Exception as E:
         logger.error(E)

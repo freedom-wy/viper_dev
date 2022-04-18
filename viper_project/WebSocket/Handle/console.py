@@ -154,6 +154,7 @@ class Console(object):
     def print_monitor_from_sub(message=None):
         """处理msf模块发送的data信息pub_json_data"""
         body = message.get('data')
+        logger.info("sub_msf_console_print_thread订阅数据: {}".format(body))
         try:
             msf_module_return_dict = json.loads(body)
             prompt = msf_module_return_dict.get("prompt")

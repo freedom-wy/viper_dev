@@ -385,7 +385,7 @@ class _CommonModule(object):
                                                         "data": data}
                     except Exception as E:
                         logger.exception(E)
-
+        logger.info("opts: {}".format(opts))
         return opts
 
     # 监听相关函数
