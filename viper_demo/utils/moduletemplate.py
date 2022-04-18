@@ -3,6 +3,15 @@ from config.viper_config import TAG2TYPE
 import threading
 from utils.xcache import Xcache
 import time
+import json
+from utils.log import logger
+from config.viper_config import HANDLER_OPTION, CREDENTIAL_OPTION, FILE_OPTION
+from Handle.payload import Payload
+import os
+from config.viper_config import MODULE_DATA_DIR
+from jinja2 import Environment, FileSystemLoader
+import random
+import string
 
 
 class _CommonModule(object):
@@ -42,6 +51,43 @@ class _CommonModule(object):
     def check(self):
         return True, None
 
+    def param(self, name):
+        if name in [HANDLER_OPTION.get('name'), CREDENTIAL_OPTION.get('name'), FILE_OPTION.get('name')]:
+            if self._custom_param.get(name) is None:
+                return None
+            try:
+                tmp_param = json.loads(self._custom_param.get(name))
+                return tmp_param
+            except Exception as E:
+                logger.warning(E)
+                return None
+
+        else:
+            return self._custom_param.get(name)
+
+    @property
+    def loadpath(self):
+        """获取模块加载路径"""
+        return self.__module__
+
+    @property
+    def module_data_dir(self):
+        """模块对应的Data目录路径"""
+        return os.path.join(MODULE_DATA_DIR, self.loadpath.split(".")[-1])
+
+    def generate_context_by_template(self, filename, **kwargs):
+        """根据模板获取内容"""
+        env = Environment(loader=FileSystemLoader(self.module_data_dir))
+        tpl = env.get_template(filename)
+        context = tpl.render(**kwargs)
+        return context
+
+    @staticmethod
+    def random_str(num):
+        """生成随机字符串"""
+        salt = ''.join(random.sample(string.ascii_letters, num))
+        return salt
+
 
 class _PostCommonModule(_CommonModule):
     def __init__(self, sessionid, ipaddress, custom_param):
@@ -79,3 +125,17 @@ class PostPythonModule(_PostCommonModule):
         具体模块执行的逻辑
         """
         pass
+
+    def generate_hex_reverse_shellcode_by_handler(self):
+        """
+        生成shellcode
+        """
+        # 获取前端传递过来的参数
+        handle_config = self.param(HANDLER_OPTION.get("name"))
+        if not handle_config:
+            return None
+        shellcode = Payload.generate_shellcode(mname=handle_config.get("PAYLOAD"), opts=handle_config)
+        logger.info("shellcode的类型为: {}".format(type(shellcode)))
+        reverse_hex_str = shellcode.hex()[::-1]
+        return reverse_hex_str
+

