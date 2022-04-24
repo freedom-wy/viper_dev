@@ -28,6 +28,7 @@ class MSFModule(object):
                   opts,
                   runasjob,
                   timeout]
+        logger.info("调用msf传递参数为: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=timeout)
         return result
 
@@ -41,7 +42,7 @@ class MSFModule(object):
                   True,  # 强制设置后台运行
                   RPC_JOB_API_REQ  # 超时时间
                   ]
-
+        logger.info("msf模块参数: {}".format(params))
         result = RpcClient.call(Method.ModuleExecute, params, timeout=RPC_JOB_API_REQ)
         if result is None:
             Notice.send_warning(f"渗透服务连接失败,无法执行模块 :{msf_module.NAME_ZH}",
@@ -85,7 +86,7 @@ class MSFModule(object):
         # 'data': {'WHOAMI': 'nt authority\\system', 'IS_SYSTEM': True, }
         # }
         body = message.get('data')
-        logger.info("store_result_from_sub订阅数据: {}".format(body))
+        logger.info("sub_msf_module_result_thread订阅数据: {}".format(body))
         # 解析报文
         try:
             msf_module_return_dict = json.loads(body)

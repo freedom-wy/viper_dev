@@ -97,7 +97,6 @@ class _CommonModule(object):
 
     def param(self, name):
         """获取输入参数的接口"""
-        logger.info("name: {}".format(name))
         if name in [HANDLER_OPTION.get('name'), CREDENTIAL_OPTION.get('name'), FILE_OPTION.get('name')]:
             if self._custom_param.get(name) is None:
                 return None
@@ -386,7 +385,7 @@ class _CommonModule(object):
                                                         "data": data}
                     except Exception as E:
                         logger.exception(E)
-        logger.info("opts: {}".format(opts))
+
         return opts
 
     # 监听相关函数
